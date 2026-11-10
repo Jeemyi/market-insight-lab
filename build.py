@@ -24,6 +24,7 @@ from xml.etree import ElementTree as ET
 import requests
 from metrics import fetch_metrics, make_features, demo_feature
 from deep_analysis import analyze
+from data_research import analyze_data
 from editorial import discover_issues
 from policy_sources import PRIMARY_SOURCES
 from bs4 import BeautifulSoup
@@ -354,7 +355,7 @@ def build_data(demo=False):
         demo_features=[demo_feature()]
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':articles,
                 'issue_candidates':discover_issues(articles, demo_features, now),
-                'insights':[], 'deep_reports':[], 'deep_status':'시연 데이터: 실제 AI 분석은 포함하지 않음', 'features':demo_features, 'analysis_status':'과거 수치 사례 · 오늘의 실시간 수치 아님',
+                'insights':[], 'deep_reports':[], 'deep_status':'시연 데이터: 실제 AI 분석은 포함하지 않음', 'data_reports':[], 'data_ai_status':'시연 데이터: AI 생성 없음', 'features':demo_features, 'analysis_status':'과거 수치 사례 · 오늘의 실시간 수치 아님',
                 'sources_ok':0,'sources_total':len(SOURCES),'errors':[], 'demo':True, 'policy_sources':[]}
 
     statuses=[]
@@ -383,16 +384,17 @@ def build_data(demo=False):
     errors=[f'{label}: {error}' for label,error in statuses if error]
     if not selected:  # preserve truthful status; do not publish fictional 'latest' stories
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':[],
-                'insights':[], 'issue_candidates':[], 'deep_reports':[], 'deep_status':'수집 데이터 부족으로 교차분석 보류', 'features':[], 'analysis_status':'분석 보류: 수집된 기사 없음', 'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
+                'insights':[], 'issue_candidates':[], 'deep_reports':[], 'deep_status':'수집 데이터 부족으로 교차분석 보류', 'data_reports':[], 'data_ai_status':'수집 지표 없음', 'features':[], 'analysis_status':'분석 보류: 수집된 기사 없음', 'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
     # Evidence first: never headline a pre-written textbook explanation.
     series, series_errors = fetch_metrics(now)
     features = make_features(series, selected, now)
     issue_candidates=discover_issues(selected, features, now)
     deep_reports, deep_status = analyze(selected, features, now, issue_candidates)
+    data_reports, data_ai_status = analyze_data(features, selected, deep_reports, now)
     analysis_status = (f'실제 수치 기반 {len(features)}건 · FRED {len(series)}/6개 시계열 · ' +
                        ('지표 일부 미확보' if series_errors else '지표 수집 완료'))
     return {'generated_at':now.isoformat(timespec='minutes'),'articles':selected,
-            'insights':[], 'issue_candidates':issue_candidates, 'deep_reports':deep_reports, 'deep_status':deep_status, 'features':features, 'analysis_status':analysis_status,
+            'insights':[], 'issue_candidates':issue_candidates, 'deep_reports':deep_reports, 'deep_status':deep_status, 'data_reports':data_reports, 'data_ai_status':data_ai_status, 'features':features, 'analysis_status':analysis_status,
             'metric_errors':series_errors,
             'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
 

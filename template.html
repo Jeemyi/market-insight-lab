@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>MARKET INSIGHT LAB v5 — 큰 변화에서 구조적 통찰을 읽기</title>
+<title>MARKET INSIGHT LAB v6.1 — 결론부터 읽는 시장 리서치</title>
 <meta name="description" content="뉴스를 시장 구조·금리·환율·수급·포트폴리오 위험의 연결고리로 읽는 자산운용 취업 준비용 인사이트 대시보드">
 <style>
 :root{--ink:#1b273c;--ink2:#566278;--ink3:#8590a3;--paper:#f6f8fb;--card:#fff;--line:#e6eaf1;--accent:#244e9e;--pale:#eaf0fc;--mint:#dff7ee;--strong:#142847;--orange:#cd783e;--shadow:0 12px 36px rgba(22,42,74,.055)}
@@ -116,6 +116,28 @@
 .optional-issues>summary{cursor:pointer;color:#5a6e8b;font-size:12px;padding:17px 0}
 .optional-issues .issue-section{padding-bottom:18px}
 @media(max-width:650px){.deep-cover{padding:20px}.deep-cover h3{font-size:19px}.deep-cover .deep-thesis{font-size:13px}.report-expand>summary{padding:15px 20px}.research-body{padding:4px 18px 18px}.research-body h4{font-size:15px}.research-body p{font-size:13px}.research-body .scenario-grid{grid-template-columns:1fr}.research-body .scenario p{font-size:12px}}
+/* v6.1: section 02 is evidence-first, conclusion-first AI research, not a question checklist. */
+.insight-deck{grid-template-columns:1fr}
+.insight-card:first-child,.insight-card{grid-column:1/-1;display:block;background:#fff}
+.insight-card:first-child .insight-links,.insight-card .insight-links{border-left:0;border-top:1px solid #e2e9f4;padding:15px 0 0;margin-top:19px;display:block}
+.data-report-cover{background:#eff5fd;border-left:4px solid #315c95;padding:16px 19px;border-radius:0 12px 12px 0;margin-top:17px}
+.data-report-cover .mini-label{font-size:11px;color:#4e6e9d;font-weight:800;margin-bottom:7px}
+.insight-section .data-report-cover p{color:#233e62;font-size:14px;line-height:1.9;font-weight:630;margin:0}
+.data-expand{border:1px solid #e1e8f3;border-radius:12px;margin-top:15px;overflow:hidden}
+.data-expand>summary{list-style:none;cursor:pointer;background:#f8faff;color:#2a5488;font-size:13px;font-weight:800;padding:15px 17px;display:flex;justify-content:space-between}
+.data-expand>summary::-webkit-details-marker{display:none}
+.data-expand>summary::after{content:'＋';font-size:16px}
+.data-expand[open]>summary::after{content:'−'}
+.data-research-body{padding:6px 19px 22px}
+.data-research-body section{border-bottom:1px solid #edf1f6;padding:17px 0}
+.data-research-body section:last-child{border:0}
+.data-research-body h4{font-size:15px;margin:0 0 10px;color:#26476b}
+.insight-section .data-research-body p{font-size:13px;line-height:1.95;margin:0 0 10px;color:#45566e;word-break:keep-all}
+.data-scenarios{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.data-scenarios>div{background:#f6f9fc;padding:13px;border:1px solid #e7ecf3;border-radius:10px}
+.data-scenarios b{color:#365a80;font-size:12px}
+.insight-section .no-data-ai{font-size:12px;background:#f7f9fc;border-radius:8px;padding:12px 14px;color:#7d899b;margin-top:12px}
+@media(max-width:650px){.data-scenarios{grid-template-columns:1fr}.data-research-body{padding:6px 14px 16px}.data-report-cover{padding:13px}.insight-section .data-report-cover p{font-size:13px}}
 </style>
 </head>
 <body>
@@ -134,7 +156,7 @@
     <div class="insight-status" id="deepStatus"></div><div class="deep-deck" id="deepDeck" aria-live="polite"></div>
   </section>
   <section class="insight-section" aria-labelledby="insight-heading">
-   <div class="insight-section-top"><div><div class="insight-overline">02 / OBSERVED MARKET DATA</div><h2 id="insight-heading">확인된 숫자로 읽는 오늘의 시장</h2><p>최근 실제 관측값과 변화폭을 먼저 제시합니다. 관련 기사는 해석의 맥락을 더하며, <strong>서로 움직였다는 사실이 인과관계를 입증하지는 않습니다.</strong></p></div><span class="insight-count" id="insightCount">— THEMES</span></div>
+   <div class="insight-section-top"><div><div class="insight-overline">02 / DATA-DRIVEN RESEARCH</div><h2 id="insight-heading">숫자에서 출발하는 구조적 시장 해석</h2><p>같은 관측일의 실제 FRED 수치를 계산한 뒤, AI가 전달 경로·반대 가설·조건부 결론을 분석합니다. <strong>01번과 주제가 겹치지 않는 데이터 리서치를 우선합니다.</strong> 숫자의 동행만으로 인과관계는 확정하지 않습니다.</p></div><span class="insight-count" id="insightCount">— THEMES</span></div>
    <div class="insight-status" id="analysisStatus"></div>
    <div class="insight-deck" id="insightDeck" aria-live="polite"></div>
   </section>
@@ -163,9 +185,9 @@
     <div class="routine"><div class="routine-num">03분</div><div><strong>반론까지 말하기</strong><p>어떤 조건에서 해석이 틀릴 수 있는지 덧붙이기</p></div></div>
    </section>
    <section class="sidebar-card"><div class="side-label">ANALYSIS FRAME</div><h2 class="side-title">중요한 변화를 볼 때</h2><div class="chain"><b>① 기준선</b> 이전 기간·시장 예상과 비교<br><b>② 비교집단</b> 다른 나라·업종·자산과 대조<br><b>③ 전달 경로</b> 누가 사고팔고, 현금흐름·금리가 어떻게 연결되는가<br><b>④ 반대 가설</b> 환율·구성효과·계절성·제도 효과를 구분<br><b>⑤ 후속 변화</b> 다음에 확인할 지표와 시점</div><div class="side-divider"></div><div class="footnote">기계적인 하나의 화살표로 모든 현상을 설명하지 않습니다.</div></section>
-   <section class="sidebar-card"><div class="side-label">THINKING PRACTICE</div><h2 class="side-title">스스로 결론 만드는 연습</h2><div class="study-example">“A가 발생했다. 그러나 B의 수치와 C 제도 변화를 함께 보면, D라는 구조적 원인도 가능하다. 그 설명이 맞다면 다음에는 E가 움직여야 한다.”</div></section>
+   <section class="sidebar-card"><div class="side-label">RESEARCH STANDARD</div><h2 class="side-title">분석의 검증 원칙</h2><div class="study-example">확인된 가격·금리·환율 변화와 그것을 설명하는 인과 가설은 다릅니다. 숫자의 기준일이 일치하는지, 다른 해석이 가능한지, 이후 어떤 관측이 결론을 바꾸는지까지 함께 제시합니다.</div></section>
    <section class="sidebar-card"><div class="side-label">DEEP READING</div><h2 class="side-title">주 1회 깊게 읽을 곳</h2><div class="sources"><a class="source-link" href="https://www.kcmi.re.kr/" target="_blank" rel="noopener noreferrer">자본시장연구원 · 자본시장포커스</a><br><a class="source-link" href="https://www.bok.or.kr/portal/main/main.do" target="_blank" rel="noopener noreferrer">한국은행 · 이슈노트 / 금융안정보고서</a><br><a class="source-link" href="https://data.krx.co.kr/" target="_blank" rel="noopener noreferrer">KRX 정보데이터시스템 · 지수 통계</a><br><a class="source-link" href="https://fred.stlouisfed.org/" target="_blank" rel="noopener noreferrer">FRED · 금리·경기 시계열</a></div><div class="side-divider"></div><div class="footnote">이 링크들은 자동으로 수집하는 RSS가 아니라 공식 통계와 심층 보고서를 직접 확인하는 읽기 자료입니다.</div></section>
-   <section class="sidebar-card side-wide"><div class="side-label">SOURCES & TRANSPARENCY</div><h2 class="side-title">기사 출처 및 요약 표시</h2><div class="sources">한국경제 · 매일경제 · 한국은행 공식 RSS<br><a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.hankyung.com/feed">한국경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.mk.co.kr/rss/">매일경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.bok.or.kr/static/view/popup/rss_popup.html">한국은행 RSS</a></div><div class="side-divider"></div><div class="footnote">접힌 <b>추가 기사 묶음</b>은 자동 분류된 참고 자료입니다. <b>심층 리서치</b>는 API 연결 시 최소 분량과 근거 조건을 통과한 원고만 게시합니다. <b>수치 비교</b>는 관측값으로 계산한 차이입니다. 둘 다 기사 원문과 지표 단위의 추가 확인이 필요합니다. 기사 본문·공식 지표를 자동으로 완전히 검증하는 서비스는 아닙니다. 제공 내용은 투자 권유가 아닙니다.</div></section>
+   <section class="sidebar-card side-wide"><div class="side-label">SOURCES & TRANSPARENCY</div><h2 class="side-title">기사 출처 및 요약 표시</h2><div class="sources">한국경제 · 매일경제 · 한국은행 공식 RSS<br><a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.hankyung.com/feed">한국경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.mk.co.kr/rss/">매일경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.bok.or.kr/static/view/popup/rss_popup.html">한국은행 RSS</a></div><div class="side-divider"></div><div class="footnote">접힌 <b>추가 기사 묶음</b>은 자동 분류된 참고 자료입니다. <b>심층 리서치</b>는 API 연결 시 최소 분량과 근거 조건을 통과한 원고만 게시합니다. <b>데이터 리서치</b>는 같은 날짜의 실제 관측값을 바탕으로 AI가 구조적 해설을 작성합니다. 수치 계산은 프로그램이 수행하며 인과관계는 검증 가설입니다. 둘 다 기사 원문과 지표 단위의 추가 확인이 필요합니다. 기사 본문·공식 지표를 자동으로 완전히 검증하는 서비스는 아닙니다. 제공 내용은 투자 권유가 아닙니다.</div></section>
   </aside>
   </div>
 </main>
@@ -243,16 +265,27 @@
  }
  function insightCard(ins,idx){
   const lookup=new Map(articles.map(a=>[a.id,a]));
-  const refs=(ins.article_ids||[]).map(id=>lookup.get(id)).filter(Boolean);
+  const r=(data.data_reports||[]).find(rep=>rep.feature_id===ins.id);
+  const refs=(r?r.article_ids:ins.article_ids||[]).map(id=>lookup.get(id)).filter(Boolean);
   const related=refs.map(a=>`<div>${urlSafe(a.url)?`<a href="${esc(urlSafe(a.url))}" target="_blank" rel="noopener noreferrer">${esc(a.title)} ↗</a>`:esc(a.title)}<small>${esc(a.source)} · ${esc(fmtDate(a.published))}</small></div>`).join('');
-  const primary=(ins.data_links||[]).map(e=>urlSafe(e.url)?`<a class="evidence-link" href="${esc(urlSafe(e.url))}" target="_blank" rel="noopener noreferrer">↗ ${esc(e.label)} · 원자료 / 보도 확인</a>`:'').join('');
+  const primary=(ins.data_links||[]).map(e=>urlSafe(e.url)?`<a class="evidence-link" href="${esc(urlSafe(e.url))}" target="_blank" rel="noopener noreferrer">↗ ${esc(e.label)} · FRED 원자료</a>`:'').join('');
   const nums=(ins.facts||[]).map(f=>`<div class="fact-tile"><span class="fact-name">${esc(f.label)}</span><strong class="fact-value">${esc(f.value)}</strong><span class="fact-detail">${esc(f.detail)}</span></div>`).join('');
-  return `<article class="insight-card"><div class="insight-main"><div class="insight-brow"><span class="insight-tag">${String(idx+1).padStart(2,'0')} · ${esc(ins.name)}</span><span class="insight-level">${esc(ins.mode)} · ${esc(ins.period_end)}</span></div>
-    <h3>${esc(ins.title)}</h3><p>${esc(ins.subtitle)}</p><div class="fact-row">${nums}</div>
-    <div class="insight-highlight"><span class="mini-label">실제 관측된 숫자 · 공통 관측일 기준</span><p class="evidence-statement">${esc(ins.observed)}</p></div>
-    <div class="insight-feature-body"><div class="focus"><b>숫자에서 발견하는 연결고리</b><p>${esc(ins.interpretation)}</p></div><div><b>다른 해석도 가능한가?</b><p>${esc(ins.alternative)}</p></div><div><b>다음에 확인할 지표</b><p>${esc(ins.verify)}</p></div></div>
-    <p class="feature-period">측정 구간: ${esc(ins.period_start)} ~ ${esc(ins.period_end)} · 날짜가 다른 지표를 임의로 합치지 않음</p>
-   </div><div class="insight-links"><div class="insight-link-heading">실제 수치의 출처 · 관련 기사</div>${primary}<div class="insight-related">${related||'<span>동일 주제의 RSS 기사는 아직 수집되지 않았습니다.</span>'}</div><div class="source-note">수치 출처는 원자료 링크로 확인하세요. 관련 기사 제목을 연결했다는 사실만으로 해석이 검증되는 것은 아닙니다. 종목별 지수 기여도 등 별도 계산이 필요한 수치는 임의 생성하지 않습니다.</div></div></article>`;
+  const title=r?r.headline:ins.title;
+  const ai=r?`<div class="data-report-cover"><div class="mini-label">AI가 수치에서 도출한 구조적 결론 · ${esc(r.confidence)} 확신</div><p>${esc(r.conclusion)}</p></div>
+   <details class="data-expand"><summary>데이터 리서치 심층 분석 펼쳐보기</summary><div class="data-research-body">
+   <section><h4>01 · 실제 수치가 보여준 변화</h4><p>${esc(r.market_observation)}</p></section>
+   <section><h4>02 · 변화가 시장에 전달되는 경로</h4>${r.transmission.map(t=>`<p>${esc(t)}</p>`).join('')}</section>
+   <section><h4>03 · 한 단계 더 깊은 구조적 통찰</h4><p>${esc(r.structural_insight)}</p></section>
+   <section><h4>04 · 다른 설명은 무엇인가?</h4><p>${esc(r.alternative)}</p></section>
+   <section><h4>05 · 해석을 강화하거나 약화할 조건</h4><div class="data-scenarios"><div><b>강화할 관측</b><p>${esc(r.scenario_support)}</p></div><div><b>반대되는 관측</b><p>${esc(r.scenario_challenge)}</p></div></div></section>
+   <section><h4>06 · 투자 환경에서 달라지는 의미</h4><p>${esc(r.investor_meaning)}</p></section>
+   <section><h4>근거와 검증의 한계</h4><p class="limits">${esc(r.limits)}</p></section>
+   </div></details>`:`<p class="no-data-ai">AI 데이터 리서치는 아직 생성되지 않았습니다. 위 관측값과 변화폭은 실제 지표에서 계산했으며, 구조적 인과 분석으로 해석하지 않습니다.</p>`;
+  return `<article class="insight-card data-story-card"><div class="insight-main"><div class="insight-brow"><span class="insight-tag">${String(idx+1).padStart(2,'0')} · ${esc(ins.name)}</span><span class="insight-level">${r?'AI 데이터 리서치':'확인된 관측값'} · ${esc(ins.period_end)}</span></div>
+    <h3>${esc(title)}</h3><div class="fact-row">${nums}</div>
+    <div class="insight-highlight"><span class="mini-label">실제 관측 숫자 · 공통 관측일 기준</span><p class="evidence-statement">${esc(ins.observed)}</p></div>${ai}
+    <p class="feature-period">측정 구간: ${esc(ins.period_start)} ~ ${esc(ins.period_end)} · 공통 관측일 기준 비교</p>
+   </div><div class="insight-links"><div class="insight-link-heading">수치의 출처 · 관련 기사</div>${primary}<div class="insight-related">${related||'<span>연결된 관련 뉴스는 없습니다. 금융지표의 정량적 변화만을 검토했습니다.</span>'}</div><div class="source-note">수치는 FRED의 관측자료이며 AI의 해석은 인과관계 입증이 아닙니다. 데이터의 발표 시차·수정 가능성 및 기사 발췌의 한계를 고려해야 합니다.</div></div></article>`;
  }
  function update(){
   const reports=data.deep_reports||[];
@@ -265,8 +298,8 @@
   $('#deepStatus').textContent=data.deep_status||'AI 교차분석 미실행';
   $('#deepDeck').innerHTML=reports.map((r,i)=>deepCard(r,i)).join('')||`<div class="deep-notice"><b>오늘의 완성형 리서치는 아직 없습니다.</b> ${esc(data.deep_status||'원고 생성에 필요한 근거 부족')}.<br>요약 기사나 검증 질문을 완성된 인사이트처럼 표시하지 않습니다. 아래 금융지표와 기사 목록은 별도로 확인할 수 있습니다.</div>`;
   const insights=data.features||[];
-  $('#insightCount').textContent=`${insights.length} DATA STORIES`;
-  $('#analysisStatus').textContent=data.analysis_status||'별도 AI 분석 없음';
+  $('#insightCount').textContent=`${(data.data_reports||[]).length} AI REPORTS · ${insights.length} DATA SETS`;
+  $('#analysisStatus').textContent=(data.data_ai_status||'AI 데이터 해설 상태 미확인')+' · '+(data.analysis_status||'수치 없음');
   $('#insightDeck').innerHTML=insights.map(insightCard).join('')||'<div class="insight-blank">분석 카드 보류: 숫자를 연결할 수 있는 최신 FRED 시계열 자료가 부족합니다. 개념 설명으로 빈자리를 채우지 않습니다. 아래 실제 기사 목록과 데이터 출처를 확인하세요.</div>';
   $('#articleCount').innerHTML=`${articles.length}<small>ARTICLES</small>`;
   $('#headerDate').textContent=fmtDate(data.generated_at);
