@@ -77,6 +77,45 @@
 .issue-check p{font-size:12px;line-height:1.7;margin:5px 0;color:#415f81}.issue-check small{display:block;font-size:10px;line-height:1.6;color:#8b98aa}
 @media(max-width:830px){.issue-deck{grid-template-columns:1fr}.issue-card:first-child{grid-column:auto}}
 @media(max-width:650px){.issue-section h2{font-size:22px}.issue-card{padding:18px}.issue-card:first-child h3{font-size:19px}}
+
+/* v6: conclusion first, full research article accessible behind one disclosure */
+.deep-section{padding-top:12px}
+.deep-report{box-shadow:0 3px 18px rgba(24,52,94,.05)}
+.deep-report+.deep-report{margin-top:3px}
+.deep-cover{background:linear-gradient(135deg,#eef4ff,#fff 78%);padding:29px 31px}
+.deep-cover h3{font-size:25px;letter-spacing:-.7px;margin:9px 0 14px}
+.deep-cover .report-lead{color:#5a6d89;font-size:13px;line-height:1.8;margin-top:14px}
+.deep-report.primary .deep-cover{border-top:4px solid #244f8e}
+.deep-report .deep-thesis{font-size:15px;margin-top:12px}
+.report-expand{border-top:1px solid #e5eaf3}
+.report-expand>summary{cursor:pointer;list-style:none;padding:16px 30px;color:#315f97;font-size:13px;font-weight:760;display:flex;align-items:center;justify-content:space-between}
+.report-expand>summary::-webkit-details-marker{display:none}
+.report-expand>summary::after{content:'＋';font-size:18px}
+.report-expand[open]>summary::after{content:'−'}
+.report-expand>summary:hover{background:#f7faff}
+.research-body{padding:12px 30px 30px;max-width:900px}
+.research-body section{padding:16px 0;border-bottom:1px solid #edf0f5}
+.research-body section:last-child{border-bottom:0}
+.research-body h4{font-size:17px;color:#273e60;line-height:1.45;margin:0 0 14px;letter-spacing:-.4px}
+.research-body p{font-size:14px;color:#40516b;line-height:1.95;margin:0 0 13px;word-break:keep-all}
+.research-body .deep-claim{font-size:13px;line-height:1.8;margin:9px 0;background:#f6f9fd;padding:11px 14px;border-left:3px solid #b0c4e1;border-radius:0 8px 8px 0}
+.research-body .mechanism{padding:0;margin:12px 0;list-style:none;counter-reset:mech}
+.research-body .mechanism li{counter-increment:mech;display:flex;gap:12px;font-size:14px;color:#42536c;line-height:1.9;margin:0 0 17px}
+.research-body .mechanism li::before{content:counter(mech);flex:0 0 24px;height:24px;border-radius:50%;background:#e4ecfa;color:#315b91;text-align:center;font-size:12px;font-weight:850;line-height:24px;margin-top:3px}
+.research-body .deep-memo{background:#f1f5fc;border-left:4px solid #2f5a92;border-radius:0 12px 12px 0;padding:17px 19px}
+.research-body .deep-memo p{color:#244064;font-weight:630;margin:0}
+.research-body .scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.research-body .scenario{background:#f7f9fd;border:1px solid #e5eaf3;border-radius:12px;padding:15px}
+.research-body .scenario b{font-size:13px;color:#355980}
+.research-body .scenario p{font-size:12.5px;margin:8px 0 0}
+.research-body .source-links{display:grid;gap:7px}
+.research-body .source-links a{font-size:12px;line-height:1.6;color:#315e95;text-decoration:none}
+.research-body .source-links a:hover{text-decoration:underline}
+.research-body .limits{font-size:11px;color:#738197;line-height:1.8}
+.optional-issues{margin:8px 0 30px;border:1px solid #e4eaf3;border-radius:13px;padding:0 18px;background:#f9fbfe}
+.optional-issues>summary{cursor:pointer;color:#5a6e8b;font-size:12px;padding:17px 0}
+.optional-issues .issue-section{padding-bottom:18px}
+@media(max-width:650px){.deep-cover{padding:20px}.deep-cover h3{font-size:19px}.deep-cover .deep-thesis{font-size:13px}.report-expand>summary{padding:15px 20px}.research-body{padding:4px 18px 18px}.research-body h4{font-size:15px}.research-body p{font-size:13px}.research-body .scenario-grid{grid-template-columns:1fr}.research-body .scenario p{font-size:12px}}
 </style>
 </head>
 <body>
@@ -87,27 +126,30 @@
    <div class="hero-right"><div><div class="right-overline">CONNECTED BRIEF</div><div class="right-count" id="articleCount">—<small>ARTICLES</small></div><div class="stat-note" id="articleHint">중요도 · 근거 · 인과 · 반론</div></div><div class="right-bottom"><span class="trend-dot"></span><span id="updateInfo">업데이트 상태 확인 중</span></div></div>
   </section>
   <div id="warning"></div>
-  <section class="issue-section" aria-labelledby="issues-heading">
-    <div class="insight-section-top"><div><div class="insight-overline">01 / IMPORTANT QUESTIONS</div>
-      <h2 id="issues-heading">오늘 검증할 큰 흐름</h2>
-      <p>여러 출처가 다룬 변화를 묶어 <strong>무엇을 비교해야 인과관계를 판단할지</strong> 제시합니다. 이 목록은 AI가 내린 결론이 아니라 증거를 검증할 문제 목록입니다.</p></div><span class="insight-count" id="issueCount">— ISSUES</span></div>
-    <div class="issue-deck" id="issueDeck" aria-live="polite"></div>
-  </section>
   <section class="deep-section" aria-labelledby="deep-heading">
-    <div class="insight-section-top"><div><div class="insight-overline">02 / CROSS-MARKET RESEARCH</div>
-    <h2 id="deep-heading">연결해서 도출한 구조적 인사이트</h2>
-    <p class="deep-desc">근거가 충분한 경우에만 시장·지표·정책을 교차 분석합니다. 개별 업무나 제도를 억지로 연결하지 않고 시장 전반에 미치는 효과를 우선합니다.</p></div>
+    <div class="insight-section-top"><div><div class="insight-overline">01 / CONCLUSION-FIRST RESEARCH</div>
+    <h2 id="deep-heading">오늘의 시장을 읽는 핵심 인사이트</h2>
+    <p class="deep-desc">핵심 결론을 먼저 읽고, 관심 있는 주제의 근거·인과관계·구조적 해석·조건부 전망을 펼쳐보세요. 질문이 아닌 완성된 분석만 게시합니다.</p></div>
     <span class="insight-count" id="deepCount">— REPORTS</span></div>
     <div class="insight-status" id="deepStatus"></div><div class="deep-deck" id="deepDeck" aria-live="polite"></div>
   </section>
   <section class="insight-section" aria-labelledby="insight-heading">
-   <div class="insight-section-top"><div><div class="insight-overline">03 / OBSERVED MARKET DATA</div><h2 id="insight-heading">확인된 숫자로 읽는 오늘의 시장</h2><p>최근 실제 관측값과 변화폭을 먼저 제시합니다. 관련 기사는 해석의 맥락을 더하며, <strong>서로 움직였다는 사실이 인과관계를 입증하지는 않습니다.</strong></p></div><span class="insight-count" id="insightCount">— THEMES</span></div>
+   <div class="insight-section-top"><div><div class="insight-overline">02 / OBSERVED MARKET DATA</div><h2 id="insight-heading">확인된 숫자로 읽는 오늘의 시장</h2><p>최근 실제 관측값과 변화폭을 먼저 제시합니다. 관련 기사는 해석의 맥락을 더하며, <strong>서로 움직였다는 사실이 인과관계를 입증하지는 않습니다.</strong></p></div><span class="insight-count" id="insightCount">— THEMES</span></div>
    <div class="insight-status" id="analysisStatus"></div>
    <div class="insight-deck" id="insightDeck" aria-live="polite"></div>
   </section>
+  <details class="optional-issues"><summary>추가 참고 · 같은 주제의 기사 묶음 보기 (자동 생성된 검증 질문이며 분석 결론은 아님)</summary>
+  <section class="issue-section" aria-labelledby="issues-heading">
+    <div class="insight-section-top"><div><div class="insight-overline">03 / ADDITIONAL READING</div>
+      <h2 id="issues-heading">추가 기사 묶음과 검증 메모</h2>
+      <p>여러 출처가 다룬 변화를 묶어 <strong>무엇을 비교해야 인과관계를 판단할지</strong> 제시합니다. 이 목록은 AI가 내린 결론이 아니라 증거를 검증할 문제 목록입니다.</p></div><span class="insight-count" id="issueCount">— ISSUES</span></div>
+    <div class="issue-deck" id="issueDeck" aria-live="polite"></div>
+  </section>
+
+  </details>
   <div class="content-grid">
   <div class="main-column">
-    <div class="section-head"><div><h2 class="section-name">주요 기사 · 원자료 확인</h2><div class="section-sub">기사에서 다른 설명이나 추가 근거를 확인해 보세요</div></div><button class="section-action" type="button" id="resetRead">읽음 초기화 ↻</button></div>
+    <div class="section-head"><div><h2 class="section-name">주요 기사 · 원자료 확인</h2><div class="section-sub">리서치의 참고 근거 및 추가 기사</div></div><button class="section-action" type="button" id="resetRead">읽음 초기화 ↻</button></div>
     <section class="spotlight" id="featured" aria-live="polite"></section>
     <div class="section-head" id="allNews"><div><h2 class="section-name">참고 기사 전체 목록</h2><div class="section-sub">연결해서 읽을 소재를 직접 찾아보기 · 읽음 · 저장</div></div></div>
     <div class="toolbar"><div class="tabs" id="tabs" role="group" aria-label="기사 주제 필터"></div><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="기사 검색" aria-label="기사 제목 및 요약 검색"></div></div>
@@ -123,7 +165,7 @@
    <section class="sidebar-card"><div class="side-label">ANALYSIS FRAME</div><h2 class="side-title">중요한 변화를 볼 때</h2><div class="chain"><b>① 기준선</b> 이전 기간·시장 예상과 비교<br><b>② 비교집단</b> 다른 나라·업종·자산과 대조<br><b>③ 전달 경로</b> 누가 사고팔고, 현금흐름·금리가 어떻게 연결되는가<br><b>④ 반대 가설</b> 환율·구성효과·계절성·제도 효과를 구분<br><b>⑤ 후속 변화</b> 다음에 확인할 지표와 시점</div><div class="side-divider"></div><div class="footnote">기계적인 하나의 화살표로 모든 현상을 설명하지 않습니다.</div></section>
    <section class="sidebar-card"><div class="side-label">THINKING PRACTICE</div><h2 class="side-title">스스로 결론 만드는 연습</h2><div class="study-example">“A가 발생했다. 그러나 B의 수치와 C 제도 변화를 함께 보면, D라는 구조적 원인도 가능하다. 그 설명이 맞다면 다음에는 E가 움직여야 한다.”</div></section>
    <section class="sidebar-card"><div class="side-label">DEEP READING</div><h2 class="side-title">주 1회 깊게 읽을 곳</h2><div class="sources"><a class="source-link" href="https://www.kcmi.re.kr/" target="_blank" rel="noopener noreferrer">자본시장연구원 · 자본시장포커스</a><br><a class="source-link" href="https://www.bok.or.kr/portal/main/main.do" target="_blank" rel="noopener noreferrer">한국은행 · 이슈노트 / 금융안정보고서</a><br><a class="source-link" href="https://data.krx.co.kr/" target="_blank" rel="noopener noreferrer">KRX 정보데이터시스템 · 지수 통계</a><br><a class="source-link" href="https://fred.stlouisfed.org/" target="_blank" rel="noopener noreferrer">FRED · 금리·경기 시계열</a></div><div class="side-divider"></div><div class="footnote">이 링크들은 자동으로 수집하는 RSS가 아니라 공식 통계와 심층 보고서를 직접 확인하는 읽기 자료입니다.</div></section>
-   <section class="sidebar-card side-wide"><div class="side-label">SOURCES & TRANSPARENCY</div><h2 class="side-title">기사 출처 및 요약 표시</h2><div class="sources">한국경제 · 매일경제 · 한국은행 공식 RSS<br><a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.hankyung.com/feed">한국경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.mk.co.kr/rss/">매일경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.bok.or.kr/static/view/popup/rss_popup.html">한국은행 RSS</a></div><div class="side-divider"></div><div class="footnote">위쪽 <b>쟁점 후보</b>는 기사군을 규칙으로 묶은 질문이며, <b>AI 교차분석</b>은 API 연결 시 생성되는 조건부 가설입니다. <b>수치 비교</b>는 관측값으로 계산한 차이입니다. 둘 다 기사 원문과 지표 단위의 추가 확인이 필요합니다. 기사 본문·공식 지표를 자동으로 완전히 검증하는 서비스는 아닙니다. 제공 내용은 투자 권유가 아닙니다.</div></section>
+   <section class="sidebar-card side-wide"><div class="side-label">SOURCES & TRANSPARENCY</div><h2 class="side-title">기사 출처 및 요약 표시</h2><div class="sources">한국경제 · 매일경제 · 한국은행 공식 RSS<br><a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.hankyung.com/feed">한국경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.mk.co.kr/rss/">매일경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.bok.or.kr/static/view/popup/rss_popup.html">한국은행 RSS</a></div><div class="side-divider"></div><div class="footnote">접힌 <b>추가 기사 묶음</b>은 자동 분류된 참고 자료입니다. <b>심층 리서치</b>는 API 연결 시 최소 분량과 근거 조건을 통과한 원고만 게시합니다. <b>수치 비교</b>는 관측값으로 계산한 차이입니다. 둘 다 기사 원문과 지표 단위의 추가 확인이 필요합니다. 기사 본문·공식 지표를 자동으로 완전히 검증하는 서비스는 아닙니다. 제공 내용은 투자 권유가 아닙니다.</div></section>
   </aside>
   </div>
 </main>
@@ -163,38 +205,40 @@
       <div class="issue-check"><b>결론을 내리기 전에</b><p>${esc(issue.check)}</p><small>독립 기사 연결은 원인 검증이 아닙니다. 실제 숫자와 비교 기간을 확인해야 결론을 낼 수 있습니다.</small></div>
   </article>`;
  }
- function deepCard(r,idx,isCase=false){
+ function deepCard(r,idx){
   const lookupA=new Map(articles.map(a=>[a.id,a]));
   const lookupM=new Map((data.features||[]).map(f=>[f.id,f]));
-  const lookupP=new Map((data.policy_sources||[]).map(f=>[f.id,f]));
+  const lookupP=new Map((data.policy_sources||[]).map(p=>[p.id,p]));
   const refLink=id=>{
     const a=lookupA.get(id),m=lookupM.get(id),p=lookupP.get(id);
     if(a&&urlSafe(a.url))return `<a class="deep-ref" target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(a.url))}">${esc(a.source)} ↗</a>`;
-    if(p&&urlSafe(p.url))return `<a class="deep-ref" target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(p.url))}">${esc(p.publisher)} · ${esc(p.date)} ↗</a>`;
-    if(m)return `<span class="deep-ref">시계열 ${esc(m.name)}</span>`;
-    return `<span class="deep-ref">${esc(id)}</span>`;
+    if(p&&urlSafe(p.url))return `<a class="deep-ref" target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(p.url))}">${esc(p.publisher)} · 원문 ↗</a>`;
+    if(m)return `<span class="deep-ref">관측 지표 ${esc(m.name)}</span>`;
+    return '';
   };
-  const claims=(r.claims||[]).map(c=>`<div class="deep-claim">${esc(c.text)}<div>${(c.refs||[]).map(refLink).join('')}</div></div>`).join('');
-  const logic=(r.logic||[]).map(step=>`<li>${esc(step)}</li>`).join('');
-  const news=(r.article_ids||[]).map(id=>lookupA.get(id)).filter(Boolean).filter(a=>urlSafe(a.url)).map(a=>`<a target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(a.url))}">↗ ${esc(a.title)} <small>· ${esc(a.source)}</small></a>`).join('');
-  const metrics=(r.feature_ids||[]).map(id=>lookupM.get(id)).filter(Boolean).flatMap(f=>f.data_links||[]).map(f=>`<a target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(f.url))}">↗ ${esc(f.label)} <small>· 시계열</small></a>`).join('');
-  const policies=(r.policy_ids||[]).map(id=>lookupP.get(id)).filter(Boolean).map(p=>`<a target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(p.url))}">↗ ${esc(p.title)} <small>· ${esc(p.publisher)} · ${esc(p.date)}</small></a>`).join('');
-  return `<article class="deep-report ${isCase?'case':''}">
-  <div class="deep-cover"><div class="deep-top">${isCase?'VERIFIED EDITORIAL STUDY':String(idx+1).padStart(2,'0')+' / LIVE ISSUE'} · ${esc(r.kind||'시장 연결')} · ${esc(r.confidence)} 확신</div><h3>${esc(r.headline)}</h3><p class="deep-tension">${esc(r.tension)}</p><div class="deep-thesis"><span class="deep-section-label">핵심 발견</span><div>${esc(r.thesis||r.implication)}</div></div><p class="deep-case-caption">${esc(r.time_frame||r.mode)}</p></div>
-  <div class="deep-columns"><div class="deep-main">
-    <b>근거가 확인된 사실과 보도</b><div class="deep-evidence">${claims}</div>
-    <b>현상 → 연결 기제 → 2차 변화</b><ol class="deep-logic">${logic}</ol>
-    <div class="deep-2nd"><b>한 단계 더: 뒤따르는 변화</b><p>${esc(r.second_order||'추가 확인 필요')}</p></div>
-    <b>운용전략·산업 관점의 의미</b><p>${esc(r.implication)}</p>
-  </div><div class="deep-right">
-    <div class="deep-side-section"><b>운용지원·백오피스 관련성(있는 경우만)</b><p>${esc(r.backoffice||'직접 연계 근거는 아직 부족합니다.')}</p></div>
-    <div class="deep-side-section"><b>경쟁하는 다른 설명</b><p>${esc(r.alternative)}</p></div>
-    <div class="deep-side-section"><b>가설이 틀렸는지 확인하려면</b><p>${esc(r.verification)}</p></div>
-    <div class="deep-side-section"><b>앞으로 확인할 숫자와 발표</b><p>${esc(r.monitor||'후속 지표 확인 필요')}</p></div>
-    <div class="deep-interview"><b>핵심을 자기 언어로 설명한다면</b><p>${esc(r.interview)}</p></div>
-    <div class="deep-question"><b>스스로 답해볼 질문</b><p>${esc(r.learning_question||'이 해석에 반대하는 근거는 무엇일까?')}</p></div>
-  </div></div>
-  <div class="deep-foot"><h4>근거 자료 · 원문 링크</h4>${news}${policies}${metrics}<small>검증의 한계: ${esc(r.source_gaps||'기사 발췌만으로 인과관계가 확정되지 않습니다.')}</small></div>
+  const facts=(r.facts||[]).map(f=>`<div class="deep-claim">${esc(f.text)}<div>${(f.refs||[]).map(refLink).join('')}</div></div>`).join('');
+  const mechanisms=(r.mechanism||[]).map(s=>`<li>${esc(s)}</li>`).join('');
+  const articlesList=(r.article_ids||[]).map(id=>lookupA.get(id)).filter(Boolean).filter(a=>urlSafe(a.url)).map(a=>`<a href="${esc(urlSafe(a.url))}" target="_blank" rel="noopener noreferrer">↗ ${esc(a.title)} · ${esc(a.source)}</a>`).join('');
+  const metricsList=(r.feature_ids||[]).map(id=>lookupM.get(id)).filter(Boolean).flatMap(f=>f.data_links||[]).map(l=>`<a href="${esc(urlSafe(l.url))}" target="_blank" rel="noopener noreferrer">↗ ${esc(l.label)} · 원자료</a>`).join('');
+  const policiesList=(r.policy_ids||[]).map(id=>lookupP.get(id)).filter(Boolean).map(p=>`<a href="${esc(urlSafe(p.url))}" target="_blank" rel="noopener noreferrer">↗ ${esc(p.title)} · 공식문서</a>`).join('');
+  return `<article class="deep-report ${r.depth==='핵심'?'primary':''}">
+    <div class="deep-cover"><div class="deep-top">${String(idx+1).padStart(2,'0')} · ${esc(r.depth)} 인사이트 · ${esc(r.kind)} · ${esc(r.confidence)} 확신</div>
+    <h3>${esc(r.headline)}</h3><div class="deep-thesis"><span class="deep-section-label">먼저 읽는 핵심 결론</span>${esc(r.thesis)}</div>
+    <p class="report-lead">${esc(r.lead)}</p><p class="deep-case-caption">${esc(r.time_frame)} · ${esc(r.status||'자료 발췌 기반 AI 해석')}</p></div>
+    <details class="report-expand"><summary>근거와 심층 분석 펼쳐보기</summary>
+      <div class="research-body">
+        <section><h4>01 · 실제로 무엇이 달라졌나?</h4><div class="deep-evidence">${facts}</div><p>${esc(r.market_change)}</p></section>
+        <section><h4>02 · 서로 다른 변수가 어떻게 연결되는가?</h4><ol class="mechanism">${mechanisms}</ol></section>
+        <section><h4>03 · 한 단계 더 깊은 구조적 인사이트</h4><div class="deep-memo"><p>${esc(r.structural_insight)}</p></div></section>
+        <section><h4>04 · 앞으로의 두 가지 시나리오</h4><div class="scenario-grid">
+          <div class="scenario"><b>이런 조건이 나타난다면</b><p>${esc(r.scenario_up.condition)}</p><b>해석</b><p>${esc(r.scenario_up.interpretation)}</p></div>
+          <div class="scenario"><b>반대로 이런 조건이 나타난다면</b><p>${esc(r.scenario_down.condition)}</p><b>해석</b><p>${esc(r.scenario_down.interpretation)}</p></div>
+        </div></section>
+        <section><h4>05 · 금융시장과 투자 판단에 남는 의미</h4><p>${esc(r.what_changes)}</p></section>
+        <section><h4>기억할 한 문장</h4><div class="deep-memo"><p>${esc(r.one_sentence)}</p></div></section>
+        <section><h4>근거 자료와 검증의 한계</h4><div class="source-links">${articlesList}${policiesList}${metricsList}</div><p class="limits">${esc(r.limitations)}</p></section>
+      </div>
+    </details>
   </article>`;
  }
  function insightCard(ins,idx){
@@ -213,15 +257,13 @@
  function update(){
   const reports=data.deep_reports||[];
   const issueSection=$('.issue-section'), reportSection=$('.deep-section');
-  if(reports.length){issueSection.parentNode.insertBefore(reportSection,issueSection);
-    $('#deep-heading').previousElementSibling.textContent='01 / RESEARCH FINDINGS';
-    $('#issues-heading').previousElementSibling.textContent='02 / QUESTIONS TO VERIFY';}
+  // Research is always the primary content. Mechanical question cards stay collapsed below the data section.
   const issues=data.issue_candidates||[];
   $('#issueCount').textContent=`${issues.length} THEMES`;
   $('#issueDeck').innerHTML=issues.map(issueCard).join('')||'<div class="deep-notice">서로 다른 출처를 교차해서 읽을 만한 주제를 충분히 확보하지 못했습니다. 오늘은 분석 주제를 억지로 만들지 않습니다.</div>';
   $('#deepCount').textContent=`${reports.length} REPORTS`;
   $('#deepStatus').textContent=data.deep_status||'AI 교차분석 미실행';
-  $('#deepDeck').innerHTML=reports.map((r,i)=>deepCard(r,i,false)).join('')||`<div class="deep-notice"><b>심층 교차분석 리포트는 아직 생성되지 않았습니다.</b> ${esc(data.deep_status||'API 키 또는 검증 가능한 교차 근거가 없음')}.<br>위 쟁점 후보와 아래 실제 수치 비교는 계속 이용할 수 있습니다. 새로운 논리적 결론을 자동 생성하려면 별도의 AI API 연결이 필요합니다.</div>`;
+  $('#deepDeck').innerHTML=reports.map((r,i)=>deepCard(r,i)).join('')||`<div class="deep-notice"><b>오늘의 완성형 리서치는 아직 없습니다.</b> ${esc(data.deep_status||'원고 생성에 필요한 근거 부족')}.<br>요약 기사나 검증 질문을 완성된 인사이트처럼 표시하지 않습니다. 아래 금융지표와 기사 목록은 별도로 확인할 수 있습니다.</div>`;
   const insights=data.features||[];
   $('#insightCount').textContent=`${insights.length} DATA STORIES`;
   $('#analysisStatus').textContent=data.analysis_status||'별도 AI 분석 없음';
