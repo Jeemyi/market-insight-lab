@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>MARKET INSIGHT LAB — 연결해서 읽는 금융시장</title>
+<title>MARKET INSIGHT LAB v5 — 큰 변화에서 구조적 통찰을 읽기</title>
 <meta name="description" content="뉴스를 시장 구조·금리·환율·수급·포트폴리오 위험의 연결고리로 읽는 자산운용 취업 준비용 인사이트 대시보드">
 <style>
 :root{--ink:#1b273c;--ink2:#566278;--ink3:#8590a3;--paper:#f6f8fb;--card:#fff;--line:#e6eaf1;--accent:#244e9e;--pale:#eaf0fc;--mint:#dff7ee;--strong:#142847;--orange:#cd783e;--shadow:0 12px 36px rgba(22,42,74,.055)}
@@ -42,24 +42,72 @@
 .evidence-link{display:block;margin-bottom:9px;font-size:11.5px;line-height:1.55;color:#3d628e}
 .insight-section .source-note{font-size:10.5px;line-height:1.6;color:#8492a5;margin-top:10px}
 @media(max-width:650px){.insight-card .fact-row{grid-template-columns:repeat(2,minmax(0,1fr))}.fact-value{font-size:18px}}
+
+/* Evidence-led AI synthesis: distinct from the mechanically calculated data stories */
+.deep-section{padding:0 0 36px}.deep-section .insight-section-top{margin:0}.deep-section h2{font-size:28px;line-height:1.4;margin:6px 0 8px;letter-spacing:-.9px}.deep-section .deep-desc{font-size:12px;color:#687b95;margin:0 0 11px}.deep-deck{display:grid;gap:17px}.deep-report{background:white;border:1px solid #dbe4f2;border-radius:20px;box-shadow:var(--shadow);overflow:hidden}.deep-cover{padding:24px 27px;background:linear-gradient(115deg,#f1f5fc,#fff)}.deep-top{font-size:11px;letter-spacing:1px;color:#365b91;font-weight:800}.deep-report h3{margin:10px 0 8px;font-size:24px;line-height:1.42;letter-spacing:-.8px}.deep-tension{font-size:14px;line-height:1.8;color:#435670;margin:0}.deep-columns{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:25px;padding:24px 27px}.deep-main b,.deep-right b{font-size:12px;color:#2e5489;letter-spacing:.2px}.deep-main p,.deep-right p{font-size:13px;color:#41546d;line-height:1.85;margin:7px 0 15px}.deep-evidence{margin-bottom:18px}.deep-claim{border-left:3px solid #b1c4e2;padding:6px 0 7px 12px;margin-top:8px;font-size:12.5px;line-height:1.7;color:#344d6e}.deep-ref{display:inline-block;margin:4px 4px 0 0;font-size:10px;border-radius:6px;padding:2px 6px;color:#315d97;background:#edf3fe}.deep-logic{margin:8px 0 18px;padding-left:20px}.deep-logic li{font-size:13px;line-height:1.75;color:#41546d;margin:5px 0}.deep-right{padding-left:25px;border-left:1px solid #dce5f1}.deep-interview{background:#eaf1fc;padding:13px;border-radius:12px;margin:12px 0}.deep-interview p{margin:5px 0 0}.deep-foot{border-top:1px solid #e3e9f3;padding:16px 27px;background:#fbfcff}.deep-foot h4{font-size:12px;color:#365b91;margin:0 0 9px}.deep-foot a{font-size:12px;line-height:1.65;color:#315b98;display:block;padding:5px 0}.deep-foot a:hover{text-decoration:underline}.deep-foot small{font-size:10px;color:#7888a0}.deep-notice{padding:19px 22px;background:#f5f8fd;border:1px dashed #c9d6e8;border-radius:13px;color:#5b718c;font-size:13px;line-height:1.85}.deep-report.demo{border-style:dashed}.deep-verification{font-size:11px;color:#8290a5;padding:0 27px 15px}@media(max-width:830px){.deep-columns{grid-template-columns:1fr;gap:12px}.deep-right{padding:20px 0 0;border-left:0;border-top:1px solid #dce5f1}}@media(max-width:650px){.deep-section h2{font-size:22px}.deep-cover{padding:19px}.deep-report h3{font-size:20px}.deep-columns{padding:18px}.deep-foot{padding:15px 18px}}
+
+/* v4: evidence hierarchy, second-order effects and operational relevance */
+.study-case-section{padding:0 0 40px}.study-case-section h2{font-size:25px;letter-spacing:-.8px;margin:6px 0 10px}
+.deep-thesis{background:#edf3fd;border-left:4px solid #315e9e;padding:14px 17px;border-radius:0 11px 11px 0;font-size:14px;font-weight:750;color:#24466f;line-height:1.8;margin:15px 0 0}
+.deep-section-label{font-size:10px;font-weight:900;letter-spacing:.75px;color:#4b6c9b;margin:15px 0 6px}
+.deep-2nd{background:#f5f7fb;border:1px solid #e7ebf4;border-radius:12px;padding:15px 16px;margin-bottom:16px}
+.deep-2nd p{margin:5px 0 0!important}.deep-question{margin:14px 0 0;border:1px dashed #aebfda;border-radius:11px;padding:13px 15px;color:#325485;background:#f8faff}
+.deep-case-caption{font-size:11px;color:#7788a2;margin:11px 0 0}.deep-report.case{border:1px solid #bfcfe6}.deep-report.case .deep-cover{background:linear-gradient(115deg,#eaf2ff,#fff)}
+.deep-side-section{margin-bottom:15px}.deep-side-section p{margin-bottom:7px}
+@media(max-width:650px){.study-case-section h2{font-size:21px}.deep-thesis{font-size:13px}}
+
+
+/* v5: important issues discovered from multiple independent sources */
+.issue-section{padding:0 0 34px}.issue-section h2{font-size:27px;letter-spacing:-1px;margin:5px 0 8px}
+.issue-section .insight-section-top p{color:#75849b;font-size:12px;margin:0 0 13px;line-height:1.8}
+.issue-deck{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:10px}
+.issue-card{background:#fff;border:1px solid #dfe7f2;border-radius:17px;padding:23px;box-shadow:var(--shadow);min-width:0}
+.issue-card:first-child{grid-column:1/-1;background:linear-gradient(130deg,#f0f6ff,#fff);border-color:#d4e2f5}
+.issue-eyebrow{font-size:10px;letter-spacing:.75px;font-weight:850;color:#315c96;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.issue-eyebrow span{font-size:10px;letter-spacing:0;font-weight:500;color:#8290a4}
+.issue-card h3{font-size:18px;line-height:1.5;letter-spacing:-.45px;margin:13px 0 15px}
+.issue-card:first-child h3{font-size:23px}
+.issue-bridge{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;align-items:center}
+.issue-bridge b,.issue-evidence>b,.issue-metrics>b,.issue-check>b{font-size:11px;color:#42648e;margin-right:5px}
+.issue-bridge span{font-size:10.5px;padding:3px 7px;border-radius:6px;background:#edf2f9;color:#4c668a}
+.issue-evidence{display:grid;gap:8px}.issue-source{display:flex;gap:6px;flex-direction:column;border-top:1px solid #edf1f5;padding-top:8px;font-size:12px}
+.issue-source-meta{font-size:10px;color:#8b99ad}.issue-source a{line-height:1.55;color:#304e79}.issue-source a:hover{text-decoration:underline}
+.issue-metrics{border-top:1px solid #edf1f5;margin-top:14px;padding-top:9px}.issue-signal{display:block;font-size:11px;color:#2a619d;margin:6px 0}
+.issue-check{margin-top:15px;padding:12px 13px;background:#f5f8fc;border-left:3px solid #7fa1d1;border-radius:0 8px 8px 0}
+.issue-check p{font-size:12px;line-height:1.7;margin:5px 0;color:#415f81}.issue-check small{display:block;font-size:10px;line-height:1.6;color:#8b98aa}
+@media(max-width:830px){.issue-deck{grid-template-columns:1fr}.issue-card:first-child{grid-column:auto}}
+@media(max-width:650px){.issue-section h2{font-size:22px}.issue-card{padding:18px}.issue-card:first-child h3{font-size:19px}}
 </style>
 </head>
 <body>
 <header><div class="shell topline"><div class="brand"><span class="brand-symbol">M/</span>MARKET INSIGHT <span class="header-label">CONNECT THE DOTS</span></div><div class="top-meta"><span><span class="dot" id="statusDot"></span><span id="headerStatus">뉴스 데이터 확인 중</span></span><span id="headerDate"></span></div></div></header>
 <main class="shell">
   <section class="hero" aria-label="브리핑 소개">
-   <div class="hero-left"><div class="eyebrow">FOR FUTURE ASSET MANAGEMENT PROFESSIONALS</div><h1>뉴스 한 건보다,<br>변수의 연결을 읽기.</h1><div class="hero-desc">지수는 왜 올랐는가? 누가 올렸는가? 그때 채권·환율은 어땠는가?<br>각기 다른 기사를 하나의 현상으로 엮어 생각하는 10분.</div><div class="hero-footer"><span class="hero-pill">알림 없이 직접 확인</span><span class="hero-pill">기사 묶음 · 근거 확인</span><span class="hero-pill">원문 링크 제공</span></div></div>
-   <div class="hero-right"><div><div class="right-overline">CONNECTED BRIEF</div><div class="right-count" id="articleCount">—<small>ARTICLES</small></div><div class="stat-note" id="articleHint">현상 · 수치 · 구조 · 반론 · 면접</div></div><div class="right-bottom"><span class="trend-dot"></span><span id="updateInfo">업데이트 상태 확인 중</span></div></div>
+   <div class="hero-left"><div class="eyebrow">FOR FUTURE ASSET MANAGEMENT PROFESSIONALS</div><h1>시장의 큰 변화에서,<br>숨은 구조를 찾기.</h1><div class="hero-desc">무엇이 변했고, 왜 지금이며, 다른 변수에 어떤 경로로 번지는가?<br>매일 중요한 뉴스와 지표를 연결해 가설과 반론을 함께 읽습니다.</div><div class="hero-footer"><span class="hero-pill">알림 없이 직접 확인</span><span class="hero-pill">기사 묶음 · 근거 확인</span><span class="hero-pill">원문 링크 제공</span></div></div>
+   <div class="hero-right"><div><div class="right-overline">CONNECTED BRIEF</div><div class="right-count" id="articleCount">—<small>ARTICLES</small></div><div class="stat-note" id="articleHint">중요도 · 근거 · 인과 · 반론</div></div><div class="right-bottom"><span class="trend-dot"></span><span id="updateInfo">업데이트 상태 확인 중</span></div></div>
   </section>
   <div id="warning"></div>
+  <section class="issue-section" aria-labelledby="issues-heading">
+    <div class="insight-section-top"><div><div class="insight-overline">01 / IMPORTANT QUESTIONS</div>
+      <h2 id="issues-heading">오늘 검증할 큰 흐름</h2>
+      <p>여러 출처가 다룬 변화를 묶어 <strong>무엇을 비교해야 인과관계를 판단할지</strong> 제시합니다. 이 목록은 AI가 내린 결론이 아니라 증거를 검증할 문제 목록입니다.</p></div><span class="insight-count" id="issueCount">— ISSUES</span></div>
+    <div class="issue-deck" id="issueDeck" aria-live="polite"></div>
+  </section>
+  <section class="deep-section" aria-labelledby="deep-heading">
+    <div class="insight-section-top"><div><div class="insight-overline">02 / CROSS-MARKET RESEARCH</div>
+    <h2 id="deep-heading">연결해서 도출한 구조적 인사이트</h2>
+    <p class="deep-desc">근거가 충분한 경우에만 시장·지표·정책을 교차 분석합니다. 개별 업무나 제도를 억지로 연결하지 않고 시장 전반에 미치는 효과를 우선합니다.</p></div>
+    <span class="insight-count" id="deepCount">— REPORTS</span></div>
+    <div class="insight-status" id="deepStatus"></div><div class="deep-deck" id="deepDeck" aria-live="polite"></div>
+  </section>
   <section class="insight-section" aria-labelledby="insight-heading">
-   <div class="insight-section-top"><div><div class="insight-overline">01 / MARKET CONNECTIONS</div><h2 id="insight-heading">확인된 숫자로 읽는 오늘의 시장</h2><p>최근 실제 관측값과 변화폭을 먼저 제시합니다. 관련 기사는 해석의 맥락을 더하며, <strong>서로 움직였다는 사실이 인과관계를 입증하지는 않습니다.</strong></p></div><span class="insight-count" id="insightCount">— THEMES</span></div>
+   <div class="insight-section-top"><div><div class="insight-overline">03 / OBSERVED MARKET DATA</div><h2 id="insight-heading">확인된 숫자로 읽는 오늘의 시장</h2><p>최근 실제 관측값과 변화폭을 먼저 제시합니다. 관련 기사는 해석의 맥락을 더하며, <strong>서로 움직였다는 사실이 인과관계를 입증하지는 않습니다.</strong></p></div><span class="insight-count" id="insightCount">— THEMES</span></div>
    <div class="insight-status" id="analysisStatus"></div>
    <div class="insight-deck" id="insightDeck" aria-live="polite"></div>
   </section>
   <div class="content-grid">
   <div class="main-column">
-    <div class="section-head"><div><h2 class="section-name">오늘 눈여겨볼 기사 5건</h2><div class="section-sub">기사에서 다른 설명이나 추가 근거를 확인해 보세요</div></div><button class="section-action" type="button" id="resetRead">읽음 초기화 ↻</button></div>
+    <div class="section-head"><div><h2 class="section-name">주요 기사 · 원자료 확인</h2><div class="section-sub">기사에서 다른 설명이나 추가 근거를 확인해 보세요</div></div><button class="section-action" type="button" id="resetRead">읽음 초기화 ↻</button></div>
     <section class="spotlight" id="featured" aria-live="polite"></section>
     <div class="section-head" id="allNews"><div><h2 class="section-name">참고 기사 전체 목록</h2><div class="section-sub">연결해서 읽을 소재를 직접 찾아보기 · 읽음 · 저장</div></div></div>
     <div class="toolbar"><div class="tabs" id="tabs" role="group" aria-label="기사 주제 필터"></div><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="기사 검색" aria-label="기사 제목 및 요약 검색"></div></div>
@@ -72,10 +120,10 @@
     <div class="routine"><div class="routine-num">05분</div><div><strong>기사·수치 교차 확인</strong><p>기사와 공식 데이터를 확인해 지표의 기준일 맞추기</p></div></div>
     <div class="routine"><div class="routine-num">03분</div><div><strong>반론까지 말하기</strong><p>어떤 조건에서 해석이 틀릴 수 있는지 덧붙이기</p></div></div>
    </section>
-   <section class="sidebar-card"><div class="side-label">MARKET MAP</div><h2 class="side-title">뉴스를 연결하는 순서</h2><div class="chain"><b>미국·한국 물가/고용</b> → 정책금리 전망 → <b>국채금리</b> → 달러·원화 → <b>외국인 자금 흐름</b> → 주식·채권·ETF 가격</div><div class="side-divider"></div><div class="footnote">항상 이 순서대로 움직이는 것은 아닙니다. 오늘 기사에서 실제로 어떤 연결이 나타났는지 확인하는 용도입니다.</div></section>
-   <section class="sidebar-card"><div class="side-label">INTERVIEW PRACTICE</div><h2 class="side-title">운용사 면접을 위한 1문장</h2><div class="study-example">“[시장 현상]은 [수치 A]로 확인되지만, [지표 B]를 보면 해석이 달라질 수 있습니다. 그래서 운용 시 [리스크]를 함께 보겠습니다.”</div></section>
+   <section class="sidebar-card"><div class="side-label">ANALYSIS FRAME</div><h2 class="side-title">중요한 변화를 볼 때</h2><div class="chain"><b>① 기준선</b> 이전 기간·시장 예상과 비교<br><b>② 비교집단</b> 다른 나라·업종·자산과 대조<br><b>③ 전달 경로</b> 누가 사고팔고, 현금흐름·금리가 어떻게 연결되는가<br><b>④ 반대 가설</b> 환율·구성효과·계절성·제도 효과를 구분<br><b>⑤ 후속 변화</b> 다음에 확인할 지표와 시점</div><div class="side-divider"></div><div class="footnote">기계적인 하나의 화살표로 모든 현상을 설명하지 않습니다.</div></section>
+   <section class="sidebar-card"><div class="side-label">THINKING PRACTICE</div><h2 class="side-title">스스로 결론 만드는 연습</h2><div class="study-example">“A가 발생했다. 그러나 B의 수치와 C 제도 변화를 함께 보면, D라는 구조적 원인도 가능하다. 그 설명이 맞다면 다음에는 E가 움직여야 한다.”</div></section>
    <section class="sidebar-card"><div class="side-label">DEEP READING</div><h2 class="side-title">주 1회 깊게 읽을 곳</h2><div class="sources"><a class="source-link" href="https://www.kcmi.re.kr/" target="_blank" rel="noopener noreferrer">자본시장연구원 · 자본시장포커스</a><br><a class="source-link" href="https://www.bok.or.kr/portal/main/main.do" target="_blank" rel="noopener noreferrer">한국은행 · 이슈노트 / 금융안정보고서</a><br><a class="source-link" href="https://data.krx.co.kr/" target="_blank" rel="noopener noreferrer">KRX 정보데이터시스템 · 지수 통계</a><br><a class="source-link" href="https://fred.stlouisfed.org/" target="_blank" rel="noopener noreferrer">FRED · 금리·경기 시계열</a></div><div class="side-divider"></div><div class="footnote">이 링크들은 자동으로 수집하는 RSS가 아니라 공식 통계와 심층 보고서를 직접 확인하는 읽기 자료입니다.</div></section>
-   <section class="sidebar-card side-wide"><div class="side-label">SOURCES & TRANSPARENCY</div><h2 class="side-title">기사 출처 및 요약 표시</h2><div class="sources">한국경제 · 매일경제 · 한국은행 공식 RSS<br><a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.hankyung.com/feed">한국경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.mk.co.kr/rss/">매일경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.bok.or.kr/static/view/popup/rss_popup.html">한국은행 RSS</a></div><div class="side-divider"></div><div class="footnote">인사이트의 <b>학습 프레임</b>은 사전 작성된 구조적 설명이며 실제 시장의 인과관계나 수치 검증 결과가 아닙니다. 선택적으로 API 키가 설정된 경우의 <b>AI 분석</b>은 공개된 RSS 발췌만 근거로 하며 원문 확인이 필요합니다. 기사 본문·공식 지표를 자동으로 완전히 검증하는 서비스는 아닙니다. 제공 내용은 투자 권유가 아닙니다.</div></section>
+   <section class="sidebar-card side-wide"><div class="side-label">SOURCES & TRANSPARENCY</div><h2 class="side-title">기사 출처 및 요약 표시</h2><div class="sources">한국경제 · 매일경제 · 한국은행 공식 RSS<br><a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.hankyung.com/feed">한국경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.mk.co.kr/rss/">매일경제 RSS</a> · <a class="source-link" target="_blank" rel="noopener noreferrer" href="https://www.bok.or.kr/static/view/popup/rss_popup.html">한국은행 RSS</a></div><div class="side-divider"></div><div class="footnote">위쪽 <b>쟁점 후보</b>는 기사군을 규칙으로 묶은 질문이며, <b>AI 교차분석</b>은 API 연결 시 생성되는 조건부 가설입니다. <b>수치 비교</b>는 관측값으로 계산한 차이입니다. 둘 다 기사 원문과 지표 단위의 추가 확인이 필요합니다. 기사 본문·공식 지표를 자동으로 완전히 검증하는 서비스는 아닙니다. 제공 내용은 투자 권유가 아닙니다.</div></section>
   </aside>
   </div>
 </main>
@@ -84,7 +132,7 @@
 /*__INITIAL_DATA__*/
 (function(){'use strict';
  const data=NEWS_DATA;
- const cats=['전체','금리·통화정책','거시·경기','환율·외환','채권·유동성','증시·수급','자산운용·ETF'];
+ const cats=['전체','금리·통화정책','거시·경기','환율·외환','채권·유동성','증시·수급','자산운용·ETF','제도·운용산업'];
  const $=sel=>document.querySelector(sel);
  const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const urlSafe=url=>{try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:'';}catch(e){return '';}};
@@ -102,6 +150,53 @@
  function featuredCard(a,index){return `<article class="featured-card ${read.has(a.id)?'reading-done':''}"><div class="rank">${String(index+1).padStart(2,'0')}</div><div><div class="item-meta">${category(a.category)}${a.official?'<span class="official-pill">공식 자료</span>':''}<span>${esc(a.source)}</span><span>·</span><span>${esc(fmtDate(a.published))}</span></div><h3>${urlSafe(a.url)?`<a class="story-link" href="${esc(urlSafe(a.url))}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a>`:esc(a.title)}</h3><p class="summary">${summary(a)}</p><div class="question"><span class="q-mark">읽을 때 볼 것</span> ${esc(a.question||'이 뉴스가 시장에 어떤 영향을 주는지 확인')}</div><div class="card-end">${openButton(a)}${checkBtn(a)}${saveBtn(a)}<span class="item-meta">${esc(a.summary_type||'')}</span></div></div></article>`;}
  function listCard(a){return `<article class="list-article ${read.has(a.id)?'reading-done':''}"><div class="list-date">${esc(fmtTime(a.published))}</div><div><div class="item-meta">${category(a.category)} <span>${esc(a.source)}</span>${a.official?'<span class="official-pill">공식</span>':''}</div><div class="list-title">${urlSafe(a.url)?`<a class="story-link" href="${esc(urlSafe(a.url))}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a>`:esc(a.title)}</div><p class="list-summary">${summary(a)}</p><div class="item-meta" style="margin-top:7px">${esc(a.summary_type||'')} · ${esc(fmtDate(a.published))}</div></div><div class="list-actions"><button class="icon-btn ${saved.has(a.id)?'active':''}" data-action="save" data-id="${esc(a.id)}" aria-label="${saved.has(a.id)?'저장 취소':'저장'}" title="저장">${saved.has(a.id)?'★':'☆'}</button><button class="icon-btn ${read.has(a.id)?'active':''}" data-action="read" data-id="${esc(a.id)}" aria-label="${read.has(a.id)?'읽음 취소':'읽음 표시'}" title="읽음">${read.has(a.id)?'✓':'○'}</button></div></article>`;}
 
+ function issueCard(issue,idx){
+  const articleMap=new Map(articles.map(a=>[a.id,a]));
+  const featureMap=new Map((data.features||[]).map(f=>[f.id,f]));
+  const refs=(issue.article_ids||[]).map(id=>articleMap.get(id)).filter(Boolean);
+  const articleLinks=refs.slice(0,4).map(a=>`<div class="issue-source"><span class="issue-source-meta">${esc(a.source)} · ${esc(fmtDate(a.published))}</span>${urlSafe(a.url)?`<a href="${esc(urlSafe(a.url))}" target="_blank" rel="noopener noreferrer">${esc(a.title)} ↗</a>`:esc(a.title)}</div>`).join('');
+  const signals=(issue.feature_ids||[]).map(id=>featureMap.get(id)).filter(Boolean).map(f=>`<a class="issue-signal" href="#insight-heading">${esc(f.title)} · ${esc(f.period_end)}</a>`).join('');
+  return `<article class="issue-card"><div class="issue-eyebrow">${String(idx+1).padStart(2,'0')} · ${esc(issue.theme)} <span>독립 출처 ${esc(issue.publisher_count)}곳 · 기사 ${esc(issue.article_count)}건</span></div>
+      <h3>${esc(issue.question)}</h3><div class="issue-bridge"><b>연결 단서</b> ${(issue.bridge_terms||[]).length?issue.bridge_terms.map(t=>`<span>${esc(t)}</span>`).join(''):'<span>추가 자료 확인</span>'}</div>
+      <div class="issue-evidence"><b>관련 보도에서 교차 확인할 내용</b>${articleLinks}</div>
+      ${signals?`<div class="issue-metrics"><b>같이 볼 관측 지표</b>${signals}</div>`:''}
+      <div class="issue-check"><b>결론을 내리기 전에</b><p>${esc(issue.check)}</p><small>독립 기사 연결은 원인 검증이 아닙니다. 실제 숫자와 비교 기간을 확인해야 결론을 낼 수 있습니다.</small></div>
+  </article>`;
+ }
+ function deepCard(r,idx,isCase=false){
+  const lookupA=new Map(articles.map(a=>[a.id,a]));
+  const lookupM=new Map((data.features||[]).map(f=>[f.id,f]));
+  const lookupP=new Map((data.policy_sources||[]).map(f=>[f.id,f]));
+  const refLink=id=>{
+    const a=lookupA.get(id),m=lookupM.get(id),p=lookupP.get(id);
+    if(a&&urlSafe(a.url))return `<a class="deep-ref" target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(a.url))}">${esc(a.source)} ↗</a>`;
+    if(p&&urlSafe(p.url))return `<a class="deep-ref" target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(p.url))}">${esc(p.publisher)} · ${esc(p.date)} ↗</a>`;
+    if(m)return `<span class="deep-ref">시계열 ${esc(m.name)}</span>`;
+    return `<span class="deep-ref">${esc(id)}</span>`;
+  };
+  const claims=(r.claims||[]).map(c=>`<div class="deep-claim">${esc(c.text)}<div>${(c.refs||[]).map(refLink).join('')}</div></div>`).join('');
+  const logic=(r.logic||[]).map(step=>`<li>${esc(step)}</li>`).join('');
+  const news=(r.article_ids||[]).map(id=>lookupA.get(id)).filter(Boolean).filter(a=>urlSafe(a.url)).map(a=>`<a target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(a.url))}">↗ ${esc(a.title)} <small>· ${esc(a.source)}</small></a>`).join('');
+  const metrics=(r.feature_ids||[]).map(id=>lookupM.get(id)).filter(Boolean).flatMap(f=>f.data_links||[]).map(f=>`<a target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(f.url))}">↗ ${esc(f.label)} <small>· 시계열</small></a>`).join('');
+  const policies=(r.policy_ids||[]).map(id=>lookupP.get(id)).filter(Boolean).map(p=>`<a target="_blank" rel="noopener noreferrer" href="${esc(urlSafe(p.url))}">↗ ${esc(p.title)} <small>· ${esc(p.publisher)} · ${esc(p.date)}</small></a>`).join('');
+  return `<article class="deep-report ${isCase?'case':''}">
+  <div class="deep-cover"><div class="deep-top">${isCase?'VERIFIED EDITORIAL STUDY':String(idx+1).padStart(2,'0')+' / LIVE ISSUE'} · ${esc(r.kind||'시장 연결')} · ${esc(r.confidence)} 확신</div><h3>${esc(r.headline)}</h3><p class="deep-tension">${esc(r.tension)}</p><div class="deep-thesis"><span class="deep-section-label">핵심 발견</span><div>${esc(r.thesis||r.implication)}</div></div><p class="deep-case-caption">${esc(r.time_frame||r.mode)}</p></div>
+  <div class="deep-columns"><div class="deep-main">
+    <b>근거가 확인된 사실과 보도</b><div class="deep-evidence">${claims}</div>
+    <b>현상 → 연결 기제 → 2차 변화</b><ol class="deep-logic">${logic}</ol>
+    <div class="deep-2nd"><b>한 단계 더: 뒤따르는 변화</b><p>${esc(r.second_order||'추가 확인 필요')}</p></div>
+    <b>운용전략·산업 관점의 의미</b><p>${esc(r.implication)}</p>
+  </div><div class="deep-right">
+    <div class="deep-side-section"><b>운용지원·백오피스 관련성(있는 경우만)</b><p>${esc(r.backoffice||'직접 연계 근거는 아직 부족합니다.')}</p></div>
+    <div class="deep-side-section"><b>경쟁하는 다른 설명</b><p>${esc(r.alternative)}</p></div>
+    <div class="deep-side-section"><b>가설이 틀렸는지 확인하려면</b><p>${esc(r.verification)}</p></div>
+    <div class="deep-side-section"><b>앞으로 확인할 숫자와 발표</b><p>${esc(r.monitor||'후속 지표 확인 필요')}</p></div>
+    <div class="deep-interview"><b>핵심을 자기 언어로 설명한다면</b><p>${esc(r.interview)}</p></div>
+    <div class="deep-question"><b>스스로 답해볼 질문</b><p>${esc(r.learning_question||'이 해석에 반대하는 근거는 무엇일까?')}</p></div>
+  </div></div>
+  <div class="deep-foot"><h4>근거 자료 · 원문 링크</h4>${news}${policies}${metrics}<small>검증의 한계: ${esc(r.source_gaps||'기사 발췌만으로 인과관계가 확정되지 않습니다.')}</small></div>
+  </article>`;
+ }
  function insightCard(ins,idx){
   const lookup=new Map(articles.map(a=>[a.id,a]));
   const refs=(ins.article_ids||[]).map(id=>lookup.get(id)).filter(Boolean);
@@ -116,6 +211,17 @@
    </div><div class="insight-links"><div class="insight-link-heading">실제 수치의 출처 · 관련 기사</div>${primary}<div class="insight-related">${related||'<span>동일 주제의 RSS 기사는 아직 수집되지 않았습니다.</span>'}</div><div class="source-note">수치 출처는 원자료 링크로 확인하세요. 관련 기사 제목을 연결했다는 사실만으로 해석이 검증되는 것은 아닙니다. 종목별 지수 기여도 등 별도 계산이 필요한 수치는 임의 생성하지 않습니다.</div></div></article>`;
  }
  function update(){
+  const reports=data.deep_reports||[];
+  const issueSection=$('.issue-section'), reportSection=$('.deep-section');
+  if(reports.length){issueSection.parentNode.insertBefore(reportSection,issueSection);
+    $('#deep-heading').previousElementSibling.textContent='01 / RESEARCH FINDINGS';
+    $('#issues-heading').previousElementSibling.textContent='02 / QUESTIONS TO VERIFY';}
+  const issues=data.issue_candidates||[];
+  $('#issueCount').textContent=`${issues.length} THEMES`;
+  $('#issueDeck').innerHTML=issues.map(issueCard).join('')||'<div class="deep-notice">서로 다른 출처를 교차해서 읽을 만한 주제를 충분히 확보하지 못했습니다. 오늘은 분석 주제를 억지로 만들지 않습니다.</div>';
+  $('#deepCount').textContent=`${reports.length} REPORTS`;
+  $('#deepStatus').textContent=data.deep_status||'AI 교차분석 미실행';
+  $('#deepDeck').innerHTML=reports.map((r,i)=>deepCard(r,i,false)).join('')||`<div class="deep-notice"><b>심층 교차분석 리포트는 아직 생성되지 않았습니다.</b> ${esc(data.deep_status||'API 키 또는 검증 가능한 교차 근거가 없음')}.<br>위 쟁점 후보와 아래 실제 수치 비교는 계속 이용할 수 있습니다. 새로운 논리적 결론을 자동 생성하려면 별도의 AI API 연결이 필요합니다.</div>`;
   const insights=data.features||[];
   $('#insightCount').textContent=`${insights.length} DATA STORIES`;
   $('#analysisStatus').textContent=data.analysis_status||'별도 AI 분석 없음';
@@ -124,13 +230,15 @@
   $('#headerDate').textContent=fmtDate(data.generated_at);
   $('#headerStatus').textContent=data.demo?'데모 미리보기':(articles.length?'뉴스 수집 완료':'수집 확인 필요');
   $('#statusDot').style.background=data.demo?'#df9a49':(articles.length?'#269d7f':'#db7c6b');
-  $('#updateInfo').textContent=data.demo?'화면 미리보기 · 11월 6일 과거 수치 사례':`마지막 생성 ${fmtDate(data.generated_at)} · 피드 ${data.sources_ok}/${data.sources_total}`;
+  $('#updateInfo').textContent=data.demo?'시연용 화면 · 실시간 데이터 아님':`마지막 생성 ${fmtDate(data.generated_at)} · 피드 ${data.sources_ok}/${data.sources_total}`;
   const banner=$('#warning');
-  if(data.demo) banner.innerHTML='<div class="demo-warning"><strong>화면 체험용 데모입니다.</strong> 맨 위 분석 카드는 2026년 11월 6일의 과거 사실을 확인한 예시이고, 아래 뉴스 목록은 가상 샘플입니다. <code>python build.py</code> 실행 시 최신 RSS 기사와 FRED 수치로 교체됩니다.</div>';
+  if(data.demo) banner.innerHTML='<div class="demo-warning"><strong>화면 체험용 데모입니다.</strong> 쟁점과 뉴스 목록은 시연용 가상 데이터이고, 숫자 예시는 과거 사례입니다. <code>python build.py</code> 실행 시 최신 RSS 기사와 FRED 수치로 교체됩니다.</div>';
   else if(!articles.length) banner.innerHTML='<div class="demo-warning"><strong>기사를 수집하지 못했습니다.</strong> 네트워크·RSS 응답·게시일 조건을 확인해 주세요. 실제 기사 대신 예시를 최신 뉴스처럼 보여주지 않습니다.</div>';
   else if(data.sources_ok<data.sources_total) banner.innerHTML=`<div class="source-warning">일부 피드(${data.sources_total-data.sources_ok}개)가 응답하지 않았습니다. 표시된 기사만으로 구성했으며, 누락된 출처가 있을 수 있습니다.</div>`;
   else banner.innerHTML='';
-  $('#featured').innerHTML=articles.slice(0,5).map(featuredCard).join('')||'<div class="empty">표시할 기사가 없습니다.</div>';
+  const priorityIds=[...new Set(issues.flatMap(issue=>issue.article_ids||[]))];
+  const front=[...priorityIds.map(id=>articles.find(a=>a.id===id)).filter(Boolean),...articles.filter(a=>!priorityIds.includes(a.id))].slice(0,5);
+  $('#featured').innerHTML=front.map(featuredCard).join('')||'<div class="empty">표시할 기사가 없습니다.</div>';
   $('#tabs').innerHTML=cats.map(c=>`<button class="tab ${active===c?'active':''}" data-cat="${esc(c)}" aria-pressed="${active===c}">${esc(c)}</button>`).join('');
   const q=$('#search').value.trim().toLowerCase();
   const unreadOnly=$('#unreadOnly').checked;

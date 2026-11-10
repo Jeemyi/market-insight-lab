@@ -13,6 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta
 from typing import Any
 import requests
+from editorial import publisher_of
 
 SERIES = {
     'DGS2': ('미국 국채 2년물 금리', '%'),
@@ -96,10 +97,10 @@ def related(articles: list, terms: list, limit:int=4):
     publishers=set()
     for _, a in matched:
         if len(chosen)>=limit: break
-        if a.get('source') in publishers and len(matched)>limit:
+        if publisher_of(a.get('source','')) in publishers and len(matched)>limit:
             continue
         chosen.append(a['id'])
-        publishers.add(a.get('source'))
+        publishers.add(publisher_of(a.get('source','')))
     return chosen
 
 
@@ -109,7 +110,7 @@ def feature(fid,name,title,excerpt,obs,interpretation,alternative,verify,facts,t
         'id':fid, 'name':name,'title':title,'subtitle':excerpt,
         'observed':obs,'interpretation':interpretation,'alternative':alternative,
         'verify':verify, 'facts':facts, 'article_ids':aids,'article_count':len(aids),
-        'source_count':len(set(a.get('source') for a in articles if a.get('id') in aids)),
+        'source_count':len(set(publisher_of(a.get('source','')) for a in articles if a.get('id') in aids)),
         'data_links':[{'label':SERIES[s][0], 'url':f'https://fred.stlouisfed.org/series/{s}'} for s in series],
         'period_start':start.isoformat(), 'period_end':end.isoformat(),
         'mode':'실제 수치 기반 · 인과 미검증', 'score':weight+min(len(aids),3)*2,

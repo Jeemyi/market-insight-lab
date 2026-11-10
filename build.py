@@ -23,6 +23,9 @@ from urllib.parse import quote, urlparse
 from xml.etree import ElementTree as ET
 import requests
 from metrics import fetch_metrics, make_features, demo_feature
+from deep_analysis import analyze
+from editorial import discover_issues
+from policy_sources import PRIMARY_SOURCES
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent
@@ -45,6 +48,8 @@ SOURCES = [
 ]
 
 CATEGORIES = [
+ ('제도·운용산업', ['스튜어드십','수탁자 책임','의결권','주주관여','국민연금','위탁운용사','운용사 평가','규제 개정','이해상충','준법감시','내부통제','지배구조','금융위원회','금융감독원','ESG','활동보고서','기준가 산정','수탁사','펀드 결제'], 2,
+  '제도 자체보다 운용사 평가·자금배정·업무 절차에 어떤 변화를 가져오는지 추론'),
  ('금리·통화정책', ['기준금리', '금통위', '통화정책', '연준', 'fomc', '금리인하', '금리인상', '파월', '금리동결', '한국은행', 'fed', '양적긴축', '금리 경로', '국채금리', '정책금리'], 6,
   '정책금리 기대가 채권금리·주식 할인율에 어떻게 반영되는지 보기'),
  ('거시·경기', ['cpi', '소비자물가', '물가상승률', '인플레이션', 'pce', '고용지표', '실업률', '비농업', 'gdp', '경제성장률', '경기침체', '경기둔화', '경기회복', '수출', '산업생산', '소매판매', 'pmi', '관세', '무역수지', '경상수지', '경기전망'], 5,
@@ -318,6 +323,23 @@ def build_data(demo=False):
              'published': (now-timedelta(hours=n)).isoformat(timespec='minutes'), 'timestamp':int((now-timedelta(hours=n)).timestamp()),
              'category':cat,'tags':[cat],'score':10-n*.5, 'summary':summary, 'summary_type':'데모 텍스트',
              'question':CAT_DATA[cat]['question'],'official':False,'demo':True})
+        # Fictional independent-source articles to test cross-source issue discovery.
+        # They are *never* passed off as actual market news.
+        mock_stories = [
+            ('금리·통화정책','가상매체 A','연준 금리 인하 전망과 장기국채 금리의 다른 방향', '시장 참가자들은 금리 경로와 재정 부담을 별개 요인으로 평가했다는 가상의 사례입니다.'),
+            ('채권·유동성','가상매체 B','미국 국채 발행 물량과 장기금리 기간프리미엄 점검', '가상의 두 번째 기사입니다. 국채 수급과 물가 전망을 구분해 보는 것이 핵심입니다.'),
+            ('증시·수급','가상매체 C','코스피 반도체 종목 쏠림과 외국인 매매의 연결', '가상의 기사입니다. 주가지수 등락과 상승 종목 수의 차이를 따져봅니다.'),
+            ('환율·외환','가상매체 D','달러 강세와 한국 주식시장의 외국인 순매도 비교', '가상의 기사입니다. 달러·원화·외국인 자금의 공통 원인을 생각해 봅니다.'),
+            ('거시·경기','가상매체 E','소비자물가 예상과 성장 전망의 차이가 채권에 미치는 효과', '가상 기사로, 물가와 고용의 예상치 차이를 비교해 봅니다.'),
+            ('금리·통화정책','가상매체 F','고용 둔화에도 국채금리가 반등한 이유에 대한 시장 해석', '가상 기사로, 중앙은행 기대와 장기채 수급 설명을 나란히 검토합니다.'),
+        ]
+        for n,(cat,source,title,summary) in enumerate(mock_stories):
+            articles.append({'id':f'demo-research-{n}', 'title':title,'url':'','source':source,
+             'published':(now-timedelta(hours=n+1)).isoformat(timespec='minutes'),
+             'timestamp':int((now-timedelta(hours=n+1)).timestamp()),
+             'category':cat,'tags':[cat],'score':17-n*.4,'summary':summary,
+             'summary_type':'가상 기사 (시연용)','question':'교차 검증할 지표·경로를 정해보기',
+             'official':False,'demo':True})
         # Extra clearly fictional titles make clustering visible in an offline demo.
         articles.extend([
             {'id':'demo-concentration','title':'연습 사례: 대형주가 지수에 미치는 비중과 상승 종목 수','url':'','source':'가상 기사 · 데이터 없음',
@@ -329,9 +351,11 @@ def build_data(demo=False):
              'summary':'경제지표와 예상 차이가 채권금리에 어떻게 반영될 수 있는지 배우는 예시입니다.',
              'summary_type':'학습 예시','official':False,'demo':True},
         ])
+        demo_features=[demo_feature()]
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':articles,
-                'insights':[], 'features':[demo_feature()], 'analysis_status':'과거 실제 시장 사례(2026-11-06) · 숫자 근거와 보도 링크 포함',
-                'sources_ok':0,'sources_total':len(SOURCES),'errors':[], 'demo':True}
+                'issue_candidates':discover_issues(articles, demo_features, now),
+                'insights':[], 'deep_reports':[], 'deep_status':'시연 데이터: 실제 AI 분석은 포함하지 않음', 'features':demo_features, 'analysis_status':'과거 수치 사례 · 오늘의 실시간 수치 아님',
+                'sources_ok':0,'sources_total':len(SOURCES),'errors':[], 'demo':True, 'policy_sources':[]}
 
     statuses=[]
     items=[]
@@ -359,16 +383,18 @@ def build_data(demo=False):
     errors=[f'{label}: {error}' for label,error in statuses if error]
     if not selected:  # preserve truthful status; do not publish fictional 'latest' stories
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':[],
-                'insights':[], 'features':[], 'analysis_status':'분석 보류: 수집된 기사 없음', 'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False}
+                'insights':[], 'issue_candidates':[], 'deep_reports':[], 'deep_status':'수집 데이터 부족으로 교차분석 보류', 'features':[], 'analysis_status':'분석 보류: 수집된 기사 없음', 'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
     # Evidence first: never headline a pre-written textbook explanation.
     series, series_errors = fetch_metrics(now)
     features = make_features(series, selected, now)
+    issue_candidates=discover_issues(selected, features, now)
+    deep_reports, deep_status = analyze(selected, features, now, issue_candidates)
     analysis_status = (f'실제 수치 기반 {len(features)}건 · FRED {len(series)}/6개 시계열 · ' +
                        ('지표 일부 미확보' if series_errors else '지표 수집 완료'))
     return {'generated_at':now.isoformat(timespec='minutes'),'articles':selected,
-            'insights':[], 'features':features, 'analysis_status':analysis_status,
+            'insights':[], 'issue_candidates':issue_candidates, 'deep_reports':deep_reports, 'deep_status':deep_status, 'features':features, 'analysis_status':analysis_status,
             'metric_errors':series_errors,
-            'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False}
+            'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
 
 
 def publish(data):
