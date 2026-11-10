@@ -139,17 +139,17 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
     for raw in payload.get('reports',[])[:4]:
         if not isinstance(raw,dict) or not keys.issubset(raw):
             continue
-        aids=list(dict.fromkeys(i for i in raw['article_ids'] if isinstance(i,str) and i in article_by_id))[:6]
-        mids=list(dict.fromkeys(i for i in raw['feature_ids'] if isinstance(i,str) and i in metric_by_id))[:4]
-        pids=list(dict.fromkeys(i for i in raw['policy_ids'] if isinstance(i,str) and i in policy_by_id))[:3]
+        # The model sometimes cites a real source in facts but omits that ID
+        # from article_ids/feature_ids. Prefer validated fact references.
+        cited = [rid for f in raw.get('facts', []) if isinstance(f, dict)
+                 for rid in (f.get('refs') or []) if isinstance(rid, str)]
+        aids=list(dict.fromkeys(i for i in raw['article_ids'] + cited if isinstance(i,str) and i in article_by_id))[:6]
+        mids=list(dict.fromkeys(i for i in raw['feature_ids'] + cited if isinstance(i,str) and i in metric_by_id))[:4]
+        pids=list(dict.fromkeys(i for i in raw['policy_ids'] + cited if isinstance(i,str) and i in policy_by_id))[:3]
         pubs={publisher_of(article_by_id[x]['source']) for x in aids}
-        # A source-constrained report must cover two publishers; for a policy issue
-        # one publisher plus 2 independent primary documents may suffice.
-        if not (len(pubs)>=2 and len(aids)>=2 or len(aids)>=1 and len(pids)>=2):
+        if not aids:
             continue
         confidence=raw.get('confidence')
-        if not mids and confidence!='낮음' and not pids:
-            continue
         if raw['depth'] not in ('핵심','보조'):
             continue
         texts=['time_frame','headline','thesis','lead','market_change','structural_insight',
@@ -189,9 +189,16 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
             facts.append({'text':fact['text'][:560], 'refs':refs})
         if len(facts)<2:
             continue
-        if len({r for f in facts for r in f['refs'] if r in article_by_id})<2 and len(pids)<2:
-            continue
         cited_ids={r for f in facts for r in f['refs']}
+        cited_articles={r for r in cited_ids if r in article_by_id}
+        cited_publishers={publisher_of(article_by_id[r]['source']) for r in cited_articles}
+        cited_primary={r for r in cited_ids if r in metric_by_id or r in policy_by_id}
+        # Independent evidence: either two publishers or news + directly cited
+        # FRED/official evidence. A primary series listed but never cited does
+        # not qualify. A single publisher without independent evidence fails.
+        if not ((len(cited_publishers)>=2 and len(cited_articles)>=2) or
+                (len(cited_articles)>=1 and len(cited_primary)>=1)):
+            continue
         if mids and not any(x in metric_by_id for x in cited_ids):
             # Don't use a metric just as decorative data; evidence must reference it.
             mids=[]
@@ -216,7 +223,9 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
         report['facts']=facts
         report['article_ids']=aids
         report['feature_ids']=mids
-        report['policy_ids']=pids
+        report['policy_ids']=[i for i in pids if i in cited_ids]
+        if not mids and not report['policy_ids']:
+            report['confidence']='낮음'
         report['id']='research-v6-'+str(len(reports)+1)
         report['status']='자료 발췌 기반 AI 해석 · 원문 추가 검증 필요'
         report['character_count']=n_chars
@@ -238,6 +247,60 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
     return selected
 
 
+
+def explain_rejection(raw: dict, context: dict) -> str:
+    """A concise non-sensitive cause for actionable logs and repair prompts."""
+    if not isinstance(raw,dict):
+        return 'JSON 원고 형식 오류'
+    fields=SCHEMA['properties']['reports']['items']['properties']
+    if not set(fields).issubset(raw):
+        return '필수 원고 항목 누락'
+    articles={a['id']:a for a in context['articles_public_snippets_not_full_text']}
+    metrics={f['id']:f for f in context['observed_features']}
+    policies={p['id']:p for p in context['dated_policy_background_only']}
+    refs={**articles, **metrics, **policies}
+    linked=[r for f in raw.get('facts',[]) if isinstance(f,dict)
+            for r in (f.get('refs') or []) if isinstance(r,str) and r in refs]
+    real_articles={r for r in linked if r in articles}
+    independent={r for r in linked if r in metrics or r in policies}
+    pubs={publisher_of(articles[r]['source']) for r in real_articles}
+    if not ((len(pubs)>=2 and len(real_articles)>=2) or (real_articles and independent)):
+        return '독립 근거 부족: 서로 다른 언론사 2곳 또는 기사+공식지표'
+    valid_facts=0
+    for f in raw.get('facts',[]):
+        if not isinstance(f,dict) or not isinstance(f.get('text'),str):
+            continue
+        good=[r for r in (f.get('refs') or []) if r in refs]
+        if good and len(f['text'])>=30 and _has_number_support(f['text'],' '.join(json.dumps(refs[r],ensure_ascii=False) for r in good)):
+            valid_facts+=1
+    if valid_facts<2:
+        return f'실제 출처와 숫자가 일치하는 사실 {valid_facts}건 (최소 2건 필요)'
+    paragraphs=raw.get('mechanism',[])
+    if not isinstance(paragraphs,list) or len(paragraphs)<2 or any(not isinstance(t,str) or len(t.strip())<45 for t in paragraphs):
+        return '인과 경로 설명 2문단 부족'
+    text_fields=('time_frame','headline','thesis','lead','market_change','structural_insight','what_changes','one_sentence','limitations')
+    complete=' '.join(json.dumps(refs[r],ensure_ascii=False) for r in linked)+' '+context['now_kst']
+    all_text=[raw.get(k,'') for k in text_fields]+paragraphs
+    for key in ('scenario_up','scenario_down'):
+        sc=raw.get(key,{})
+        all_text.extend([sc.get('condition',''),sc.get('interpretation','')] if isinstance(sc,dict) else [])
+    if any(not isinstance(t,str) or not _has_number_support(t,complete) for t in all_text):
+        return '본문의 숫자·날짜 중 일부가 인용 근거와 불일치'
+    if any(not isinstance(raw.get(k),str) or len(raw[k].strip())<35 for k in ('thesis','market_change','structural_insight')):
+        return '분석의 핵심 논리 설명 부족'
+    return '필수 항목의 길이·시나리오 구체성·중복 표현 검증'
+
+
+def rewrite_instruction(decoded: dict, reasons: list[str]) -> str:
+    return ('이전 결과를 그대로 게시할 수 없다. 실패 원인: '+ ' / '.join(dict.fromkeys(reasons))+
+            '. 같은 원자료만 사용해 핵심 분석 최소 1편을 다시 작성하라. '+
+            '검증 불가능한 숫자/날짜를 지우거나 인용 원자료의 실제 표현으로 바꿔라. '+
+            'facts 2개 이상은 각 refs의 원문으로 숫자까지 확인 가능하게 작성하라. '+
+            '서로 다른 언론사 2곳 이상 또는 기사 1곳+FRED 공식 지표/정책 자료로 출처를 구성하라. '+
+            '관련성이 없는 기사끼리 묶지 말고, 결론·인과·반론·후속 시나리오를 직접 설명하라. '+
+            '기본 장문 목표는 유지하되 짧은 완성 원고도 허용된다. '+
+            '잘못된 초안: '+json.dumps(decoded,ensure_ascii=False)[:18000]+ '\n수정한 reports JSON만 반환하라.')
+
 def analyze(articles:list,features:list,now:datetime,issues:list|None=None)->tuple[list[dict],str]:
     context=make_context(articles,features,now,issues)
     key=os.getenv('OPENAI_API_KEY','').strip()
@@ -248,7 +311,7 @@ def analyze(articles:list,features:list,now:datetime,issues:list|None=None)->tup
     request={
         'model':os.getenv('OPENAI_MODEL',DEFAULT_MODEL),
         'input':[{'role':'system','content':SYSTEM},
-                 {'role':'user','content':'아래 실제 뉴스 발췌와 관측 지표만 사용하여 B안 완성 리서치를 작성하라. **핵심 1편, 보조 최대 2편**. 1,000~1,500자를 목표로 하되 근거가 제한적이면 짧아도 완결된 분석을 작성하라. 질문형 과제 대신 논리적으로 완성된 결론과 서술형 분석이어야 한다. 신뢰할 수 있는 근거가 부족하면 빈 배열을 반환하라. 같은 범주의 무관한 뉴스는 연결하지 않는다. 두번째와 세번째 기사는 첫 번째와 주제가 달라야 한다. JSON만 출력.\n'+json.dumps(context,ensure_ascii=False)}],
+                 {'role':'user','content':'아래 실제 뉴스 발췌와 관측 지표만 사용하여 B안 완성 리서치를 작성하라. **핵심 1편을 우선 완성하고, 가능하면 보조 최대 2편**. 핵심 1편을 완성하는 데 집중하라. facts의 refs에는 서로 다른 매체 2곳 이상의 실제 기사 ID 또는 기사 1곳+실제 공식 관측 지표/정책 ID를 포함해야 한다. 숫자와 날짜는 원문에서 확인되는 표기만 사용하라. 1,000~1,500자를 목표로 하되 근거가 제한적이면 짧아도 완결된 분석을 작성하라. 질문형 과제 대신 논리적으로 완성된 결론과 서술형 분석이어야 한다. 신뢰할 수 있는 근거가 부족하면 빈 배열을 반환하라. 같은 범주의 무관한 뉴스는 연결하지 않는다. 두번째와 세번째 기사는 첫 번째와 주제가 달라야 한다. JSON만 출력.\n'+json.dumps(context,ensure_ascii=False)}],
         'text':{'format':{'type':'json_schema','name':'market_insight_report_v6','schema':SCHEMA,'strict':True}},
         'max_output_tokens':12500,'store':False,
     }
@@ -257,12 +320,31 @@ def analyze(articles:list,features:list,now:datetime,issues:list|None=None)->tup
         result.raise_for_status()
         decoded=json.loads(response_text(result.json()))
         reports=validate_reports(decoded,context)
-        if not reports:
-            if not decoded.get('reports'):
-                return [], 'AI가 현재 기사 발췌로는 신뢰할 만한 분석을 구성하지 못해 작성하지 않았습니다.'
-            return [], 'AI 원고가 근거·숫자·논리 검증을 통과하지 못했습니다. 분량만을 이유로 제외하지는 않습니다.'
-        concise=sum(r['length_tier']=='간결' for r in reports)
-        extra=f' · 간결 분석 {concise}편 포함' if concise else ''
-        return reports, f'완성형 시장 분석 {len(reports)}편{extra} · 출처와 원문 교차확인 권장'
+        if reports:
+            concise=sum(r['length_tier']=='간결' for r in reports)
+            extra=f' · 간결 분석 {concise}편 포함' if concise else ''
+            return reports, f'완성형 시장 분석 {len(reports)}편{extra} · 출처와 원문 교차확인 권장'
+        first_reasons=[explain_rejection(r,context) for r in decoded.get('reports',[])[:4]]
+        if not first_reasons:
+            first_reasons=['첫 생성 결과가 빈 배열']
+        print('[research] attempt 1: 0 valid; causes=', first_reasons, flush=True)
+        # One corrective pass: do not relax evidence or numeric safety gates.
+        request['input'].append({'role':'user','content':rewrite_instruction(decoded,first_reasons)})
+        second=requests.post(API_URL,headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},
+                             json=request,timeout=180)
+        second.raise_for_status()
+        decoded2=json.loads(response_text(second.json()))
+        repaired=validate_reports(decoded2,context)
+        if repaired:
+            concise=sum(r['length_tier']=='간결' for r in repaired)
+            extra=f' · 간결 분석 {concise}편 포함' if concise else ''
+            print(f'[research] attempt 2: {len(repaired)} reports published',flush=True)
+            return repaired, f'완성형 시장 분석 {len(repaired)}편{extra} · 1회 수정 후 게시 · 출처 검증 권장'
+        last_reasons=[explain_rejection(r,context) for r in decoded2.get('reports',[])[:4]]
+        if not last_reasons:
+            last_reasons=['AI가 작성할 만한 근거를 찾지 못함']
+        print('[research] attempt 2: 0 valid; causes=', last_reasons, flush=True)
+        short=' / '.join(dict.fromkeys(last_reasons))[:180]
+        return [], 'AI 원고를 한 번 재작성했으나 게시 보류: '+short+' · 실행 로그 확인'
     except (requests.RequestException,ValueError,TypeError,KeyError) as exc:
         return [],f'AI 분석 실패: {type(exc).__name__} (GitHub Actions 실행 기록 확인)'
