@@ -6,9 +6,8 @@ Download URL is public but not a formally documented stable web API.
 """
 from __future__ import annotations
 
-import csv
-import io
 import math
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta
 from typing import Any
@@ -23,33 +22,55 @@ SERIES = {
     'SP500': ('S&P 500 지수', 'pt'),
     'BAMLH0A0HYM2': ('미국 하이일드 회사채 스프레드', '%p'),
 }
-BASE = 'https://fred.stlouisfed.org/graph/fredgraph.csv'
+# FRED's public chart-download endpoint often times out on automated servers.
+# Use the official FRED API with a free account key instead.
+API_BASE = 'https://api.stlouisfed.org/fred/series/observations'
 
 
 def fetch_one(code: str, now: datetime):
+    key = os.environ.get('FRED_API_KEY', '').strip()
+    if not key:
+        return code, {}, f'{code}: FRED_API_KEY missing (add a free FRED key to GitHub Actions Secrets)'
     since = (now.date() - timedelta(days=85)).isoformat()
     try:
-        response = requests.get(BASE, params={'id':code,'cosd':since}, timeout=12,
-                headers={'User-Agent':'MarketInsightLab/2.0 (personal educational reading)'})
+        response = requests.get(
+            API_BASE,
+            params={
+                'series_id': code,
+                'api_key': key,
+                'file_type': 'json',
+                'observation_start': since,
+            },
+            timeout=(8, 25),
+            headers={'User-Agent': 'MarketInsightLab/2.1 (personal educational reading)'},
+        )
         response.raise_for_status()
-        content = response.content.decode('utf-8-sig')
-        reader = csv.DictReader(io.StringIO(content))
-        if not reader.fieldnames or code not in reader.fieldnames:
-            raise ValueError('Series not found in response')
-        records={}
-        for row in reader:
-            dt=row.get('observation_date') or row.get('DATE')
-            raw=(row.get(code) or '').strip()
-            if not dt or raw in ('','.','NaN'): continue
+        payload = response.json()
+        observations = payload.get('observations')
+        if not isinstance(observations, list):
+            raise ValueError('FRED response has no observations list')
+        records = {}
+        for row in observations:
+            dt = row.get('date')
+            raw = str(row.get('value', '')).strip()
+            if not dt or raw in ('', '.', 'NaN'):
+                continue
             try:
-                d=date.fromisoformat(dt)
-                val=float(raw)
-            except (ValueError, TypeError): continue
-            if not math.isfinite(val) or d > now.date(): continue
+                d = date.fromisoformat(dt)
+                val = float(raw)
+            except (ValueError, TypeError):
+                continue
+            if not math.isfinite(val) or d > now.date():
+                continue
             records[d] = val
-        if not records: raise ValueError('No observations')
+        if not records:
+            raise ValueError('No recent observations')
         return code, records, None
+    except requests.HTTPError as exc:
+        status = exc.response.status_code if exc.response is not None else 'unknown'
+        return code, {}, f'{code}: FRED API HTTP {status}'
     except Exception as exc:
+        # Avoid echoing request URLs or API keys into public build logs.
         return code, {}, f'{code}: {type(exc).__name__}'
 
 
