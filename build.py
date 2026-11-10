@@ -382,9 +382,19 @@ def build_data(demo=False):
                 item['summary']=snippet
                 item['summary_type']='공개 본문 발췌'
     errors=[f'{label}: {error}' for label,error in statuses if error]
-    if not selected:  # preserve truthful status; do not publish fictional 'latest' stories
+    if not selected:  # FRED analysis is independent of RSS news availability.
+        series, series_errors = fetch_metrics(now)
+        features = make_features(series, [], now)
+        data_reports, data_ai_status = analyze_data(features, [], [], now)
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':[],
-                'insights':[], 'issue_candidates':[], 'deep_reports':[], 'deep_status':'수집 데이터 부족으로 교차분석 보류', 'data_reports':[], 'data_ai_status':'수집 지표 없음', 'features':[], 'analysis_status':'분석 보류: 수집된 기사 없음', 'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
+                'insights':[], 'issue_candidates':[], 'deep_reports':[],
+                'deep_status':'공개 기사 수집 부족으로 뉴스 교차분석 미실행',
+                'data_reports':data_reports, 'data_ai_status':data_ai_status,
+                'features':features,
+                'analysis_status':f'FRED {len(series)}/6개 시계열 · 수치 기반 {len(features)}건',
+                'metric_errors':series_errors,
+                'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),
+                'errors':errors,'demo':False,'policy_sources':PRIMARY_SOURCES}
     # Evidence first: never headline a pre-written textbook explanation.
     series, series_errors = fetch_metrics(now)
     features = make_features(series, selected, now)
