@@ -55,7 +55,7 @@ SYSTEM = '''당신은 한국 자산운용사 취업을 준비하는 독자에게
 [기사 선정]
 1. 당일 거시·금리·주식·외환·신용·대형 정책·자산배분 중 가장 큰 변화부터 판단한다. ESG, 스튜어드십, 백오피스 이슈는 독자가 예시로 언급했을 뿐 자동 우대하지 않는다.
 2. 한 사건에 집중해서 여러 기사가 전해준 *같은 현상의 서로 다른 단면*을 연결하라. 같은 '경제' 범주라는 이유로 무관한 4개 사건을 이어 붙이지 마라.
-3. 중요하고 충분히 구체적인 사실이 있을 때 **핵심 1편**과 서로 다른 주제의 **보조 0~2편**을 작성하라. 핵심은 약 1,000~1,500자 이상의 충실한 분석, 보조는 각 약 500~900자를 목표로 한다. 출처가 충분치 않으면 0개 반환.
+3. 중요하고 충분히 구체적인 사실이 있을 때 **핵심 1편**과 서로 다른 주제의 **보조 0~2편**을 작성하라. 핵심은 약 1,000~1,500자, 보조는 약 500~900자의 충실한 분석을 우선 목표로 한다. 그러나 자료 자체가 제한적일 때는 분량을 억지로 늘리지 말고, 실제 사실·설명 가능한 인과 경로·구조적 결론·반대 해석·조건부 전망을 모두 갖춘 **짧지만 완결된 분석**을 작성하라. 출처나 논리 자체가 부족한 경우에만 0개 반환한다.
 4. 최신 뉴스 기사에 있는 정보와 과거 정책 참고자료를 구분하라. 회사/매체가 달라도 동일 통신사 기사를 복제했다면 독립 증거처럼 과장하지 마라.
 
 [분석 본문 — 이 순서대로]
@@ -64,12 +64,12 @@ B. thesis: 현상을 설명하는 2문장 내외의 **구체적인 구조적 결
 C. lead: 독자가 먼저 읽는 2~4문장 요약. 무엇이 바뀌었으며 왜 중요한지.
 D. facts: 날짜·시장·대상·비교기간이 명시된 직접 확인 가능한 사실 2~4개. 각 사실 옆 refs에는 실제 input의 기사/금융지표/공식문서 ID를 넣는다. 보도 속 가설은 반드시 '보도는 ~라고 분석했다'로 귀속한다.
 E. market_change: 관측된 시장 현상과 일반적 예상 사이의 어긋남, 시간순, 비교 기준을 **서술형 완성 문단**으로 작성.
-F. mechanism: 3~4개의 논리적 문단. ① 해당 현상의 배경 ② 서로 다른 변수의 실제 연결 경로 ③ 왜 어떤 대안 설명은 덜 설득력 있는지 ④ 자산가격이나 투자행동에 미친 영향. 각 문단은 구체적인 문장으로 3~5문장 이상, 교과서 정의만 쓰지 않는다.
-G. structural_insight: 개별 기사에서 한 단계 일반화한 시장구조적 통찰. 단, 확정된 사실과 추론을 구분해 4~6문장으로 서술.
+F. mechanism: 가급적 3~4개의 논리적 문단. ① 해당 현상의 배경 ② 서로 다른 변수의 전달 경로 ③ 대안 설명 ④ 자산가격이나 투자행동과의 연결. 짧은 리포트라면 중복 문장을 늘리는 대신 **구체적인 2개 이상의 논리적 문단**으로 압축한다. 교과서 정의나 질문만 나열하지 않는다.
+G. structural_insight: 개별 기사에서 한 단계 일반화한 시장구조적 통찰. 확인된 사실과 추론을 구분한다. 4~6문장을 목표로 하되, 불필요한 반복 없이 더 짧게 설명할 수 있다.
 H. scenario_up/down: '무엇이 관측된다면 특정 해석이 강해지는가' 및 그 조건이 주는 의미를 구체적으로 설명하는 두 갈래 시나리오.
-I. what_changes: 향후 자산가격·운용전략·투자자 행동에서 달라질 점을 3~5문장. 운용지원 직무에 억지로 연결하지 마라.
+I. what_changes: 향후 자산가격·운용전략·투자자 행동에서 달라질 점을 충분히 설명하라. 단, 제공된 근거가 적으면 1~3문장으로 압축할 수 있다. 운용지원 직무에 억지로 연결하지 마라.
 J. one_sentence: 하루 뒤 기억할 수 있는 독창적이고 정확한 한 문장.
-K. limitations: 무엇을 아직 검증하지 못했으며 어떤 데이터가 없어서 단정하지 않는지 2문장 이상.
+K. limitations: 무엇을 아직 검증하지 못했으며 어떤 데이터가 없어서 단정하지 않는지 명시한다. 간결한 원고라면 한 문장도 가능하다.
 
 [품질과 사실]
 - 임의 숫자, 날짜, 종목별 지수 기여도, 공식 정책 시행 요건, 예상 실적을 만들어내지 않는다. 숫자가 있는 문장은 원자료에 같은 수치가 있어야 한다. 시장·기간이 다른 숫자는 곧바로 직접 비교했다고 주장하지 않는다.
@@ -154,18 +154,25 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
             continue
         texts=['time_frame','headline','thesis','lead','market_change','structural_insight',
                'what_changes','one_sentence','limitations']
-        if any(not isinstance(raw[k],str) or len(raw[k].strip()) < (35 if k not in ('headline','time_frame','one_sentence') else 12)
+        # Length is an editorial target, never the sole publication gate. A
+        # shorter report still needs each essential analytic component.
+        field_min = {
+            'time_frame': 6, 'headline': 12, 'thesis': 40, 'lead': 30,
+            'market_change': 45, 'structural_insight': 55,
+            'what_changes': 30, 'one_sentence': 12, 'limitations': 25,
+        }
+        if any(not isinstance(raw[k],str) or len(raw[k].strip()) < field_min[k]
                for k in texts):
             continue
-        if not isinstance(raw['mechanism'],list) or not 3<=len(raw['mechanism'])<=5:
+        if not isinstance(raw['mechanism'],list) or not 2<=len(raw['mechanism'])<=5:
             continue
-        if any(not isinstance(p,str) or len(p.strip())<80 for p in raw['mechanism']):
+        if any(not isinstance(p,str) or len(p.strip())<45 for p in raw['mechanism']):
             continue
         if len({' '.join(p.split()) for p in raw['mechanism']}) != len(raw['mechanism']):
             # Repeating the same paragraph to satisfy the length rule is not analysis.
             continue
         if any(not isinstance(raw.get(s),dict) or
-               not all(isinstance(raw[s].get(k),str) and len(raw[s][k])>=35 for k in ('condition','interpretation'))
+               not all(isinstance(raw[s].get(k),str) and len(raw[s][k].strip())>=(20 if k=='condition' else 25) for k in ('condition','interpretation'))
                for s in ('scenario_up','scenario_down')):
             continue
         allowed=set(aids+mids+pids)
@@ -195,13 +202,15 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
         if any(not _has_number_support(t,combined_sources) for t in explanatory):
             continue
         n_chars=sum(len(str(t).strip()) for t in explanatory)
-        target=970 if raw['depth']=='핵심' else 580
-        if n_chars < target:
+        # 970 / 580 characters are still the preferred *targets*. Compact
+        # reporting is allowed when concrete sources support a coherent thesis
+        # and causal explanation; do not pad the report to hit a quota.
+        compact_floor=450 if raw['depth']=='핵심' else 380
+        if n_chars < compact_floor:
             continue
-        # Require substantial explanatory writing, not question lists.
-        if len(raw['market_change'])<115 or len(raw['structural_insight'])<125:
+        if raw['thesis'].strip() == raw['structural_insight'].strip():
             continue
-        if len(raw['thesis'])<65:
+        if raw['scenario_up']['condition'].strip() == raw['scenario_down']['condition'].strip():
             continue
         report=dict(raw)
         report['facts']=facts
@@ -211,6 +220,7 @@ def validate_reports(payload: dict, context: dict) -> list[dict]:
         report['id']='research-v6-'+str(len(reports)+1)
         report['status']='자료 발췌 기반 AI 해석 · 원문 추가 검증 필요'
         report['character_count']=n_chars
+        report['length_tier']='충실' if n_chars >= (970 if raw['depth']=='핵심' else 580) else '간결'
         report['_rank']=len(pubs)*4+len(mids)*3+min(len(aids),5)+int(raw['depth']=='핵심')*5
         reports.append(report)
     reports.sort(key=lambda item:item['_rank'],reverse=True)
@@ -238,7 +248,7 @@ def analyze(articles:list,features:list,now:datetime,issues:list|None=None)->tup
     request={
         'model':os.getenv('OPENAI_MODEL',DEFAULT_MODEL),
         'input':[{'role':'system','content':SYSTEM},
-                 {'role':'user','content':'아래 실제 뉴스 발췌와 관측 지표만 사용하여 B안 완성 리서치를 작성하라. **핵심 1편, 보조 최대 2편**. 질문형 과제 대신 논리적으로 완성된 결론과 서술형 분석이어야 한다. 신뢰할 수 있는 근거가 부족하면 빈 배열을 반환하라. 같은 범주의 무관한 뉴스는 연결하지 않는다. 두번째와 세번째 기사는 첫 번째와 주제가 달라야 한다. JSON만 출력.\n'+json.dumps(context,ensure_ascii=False)}],
+                 {'role':'user','content':'아래 실제 뉴스 발췌와 관측 지표만 사용하여 B안 완성 리서치를 작성하라. **핵심 1편, 보조 최대 2편**. 1,000~1,500자를 목표로 하되 근거가 제한적이면 짧아도 완결된 분석을 작성하라. 질문형 과제 대신 논리적으로 완성된 결론과 서술형 분석이어야 한다. 신뢰할 수 있는 근거가 부족하면 빈 배열을 반환하라. 같은 범주의 무관한 뉴스는 연결하지 않는다. 두번째와 세번째 기사는 첫 번째와 주제가 달라야 한다. JSON만 출력.\n'+json.dumps(context,ensure_ascii=False)}],
         'text':{'format':{'type':'json_schema','name':'market_insight_report_v6','schema':SCHEMA,'strict':True}},
         'max_output_tokens':12500,'store':False,
     }
@@ -248,7 +258,11 @@ def analyze(articles:list,features:list,now:datetime,issues:list|None=None)->tup
         decoded=json.loads(response_text(result.json()))
         reports=validate_reports(decoded,context)
         if not reports:
-            return [], 'AI 실행 완료: 샘플의 최소 분량·근거 기준을 만족하는 원고가 없어 게시하지 않았습니다.'
-        return reports, f'완성형 시장 분석 {len(reports)}편 · 출처와 원문 교차확인 권장'
+            if not decoded.get('reports'):
+                return [], 'AI가 현재 기사 발췌로는 신뢰할 만한 분석을 구성하지 못해 작성하지 않았습니다.'
+            return [], 'AI 원고가 근거·숫자·논리 검증을 통과하지 못했습니다. 분량만을 이유로 제외하지는 않습니다.'
+        concise=sum(r['length_tier']=='간결' for r in reports)
+        extra=f' · 간결 분석 {concise}편 포함' if concise else ''
+        return reports, f'완성형 시장 분석 {len(reports)}편{extra} · 출처와 원문 교차확인 권장'
     except (requests.RequestException,ValueError,TypeError,KeyError) as exc:
         return [],f'AI 분석 실패: {type(exc).__name__} (GitHub Actions 실행 기록 확인)'
