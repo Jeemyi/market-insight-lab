@@ -27,6 +27,8 @@ from deep_analysis import analyze
 from data_research import analyze_data
 from editorial import discover_issues
 from policy_sources import PRIMARY_SOURCES
+from market_research import research_public_sources
+from report_archive import merge_archive, write_archive
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent
@@ -47,6 +49,46 @@ SOURCES = [
     ('한국은행·경제통계', 'https://www.bok.or.kr/portal/bbs/B0000501/news.rss?menuNo=201264', 'official'),
     ('한국은행·금융외환', 'https://www.bok.or.kr/portal/bbs/B0000348/news.rss?menuNo=201109', 'official'),
 ]
+
+
+# Independent, short search intents. Do not combine unrelated markets into a
+# single restrictive Boolean query. Google News RSS availability can vary;
+# the two-pass public research continues if these feeds fail.
+SEARCH_QUERIES = [
+    ('한국 금리', '한국은행 기준금리 금통위'),
+    ('미국 금리', 'Federal Reserve FOMC interest rates'),
+    ('미국 물가', 'US CPI inflation report'),
+    ('미국 고용', 'US payrolls unemployment report'),
+    ('국내 경기', '한국 GDP 산업생산'),
+    ('국내 물가', '한국 소비자물가 통계청'),
+    ('미국 국채', '미국 국채 수익률 2년 10년'),
+    ('국내 국채', '한국 국고채 금리'),
+    ('회사채', '회사채 신용스프레드 발행'),
+    ('단기자금', 'CP CD MMF 단기금융'),
+    ('원달러', '원 달러 환율 외국인'),
+    ('달러 엔화', 'dollar yen exchange rate'),
+    ('코스피', '코스피 외국인 기관 수급'),
+    ('미국 주식', 'S&P 500 Nasdaq earnings'),
+    ('반도체', '삼성전자 SK하이닉스 반도체'),
+    ('상장사 실적', '기업 분기 실적 공시'),
+    ('ETF', 'ETF 채권형 자금유입'),
+    ('공모주', '공모주 IPO 수요예측'),
+    ('금융정책', '금융위원회 금융시장 제도'),
+    ('금융감독', '금융감독원 운용사 펀드'),
+    ('지배구조', '의결권 주주환원 공시'),
+    ('글로벌 원자재', 'oil prices inflation bonds'),
+]
+
+
+def google_feed(query: str) -> str:
+    english = bool(re.search(r'\b(?:US|Federal|Reserve|Nasdaq|S&P|dollar|oil)\b', query, re.I))
+    locale = ('en-US','US','US:en') if english else ('ko','KR','KR:ko')
+    return ('https://news.google.com/rss/search?q=' + quote(query+' when:30d') +
+            '&hl='+locale[0]+'&gl='+locale[1]+'&ceid='+locale[2])
+
+
+SOURCES.extend(('Google 뉴스·'+label, google_feed(query), 'search')
+               for label, query in SEARCH_QUERIES)
 
 CATEGORIES = [
  ('제도·운용산업', ['스튜어드십','수탁자 책임','의결권','주주관여','국민연금','위탁운용사','운용사 평가','규제 개정','이해상충','준법감시','내부통제','지배구조','금융위원회','금융감독원','ESG','활동보고서','기준가 산정','수탁사','펀드 결제'], 2,
@@ -155,7 +197,7 @@ def feed_item(entry, source, kind, generated_at):
     published = time_of(entry)
     if not published: return None  # Do not label undated content as today's news.
     if published > generated_at + timedelta(hours=2): return None
-    if published < generated_at - timedelta(days=7): return None
+    if published < generated_at - timedelta(days=30 if kind == 'search' else 7): return None
     cat, score, tags = classify(title, desc, kind == 'official')
     if not cat or score < 4: return None
     if generated_at - published <= timedelta(hours=30): score += 2.5
@@ -163,7 +205,8 @@ def feed_item(entry, source, kind, generated_at):
     if not distinct_enough(desc, title): desc = ''
     article_id = hashlib.sha1(link.encode('utf-8')).hexdigest()[:16]
     return {
-        'id': article_id, 'title': title, 'url': link, 'source': source,
+        'id': article_id, 'title': title, 'url': link,
+        'source': clean(entry.get('source_name')) if kind == 'search' and entry.get('source_name') else source,
         'published': published.isoformat(timespec='minutes'), 'timestamp': int(published.timestamp()),
         'category': cat, 'tags': tags, 'score': round(score, 1),
         'summary': truncate(desc, 290) if desc else '',
@@ -194,6 +237,9 @@ def parse_feed(content: bytes):
                     result['link'] = href
                 elif child.text and not result.get('link'):
                     result['link'] = child.text.strip()
+            elif name == 'source':
+                value = ''.join(child.itertext()).strip()
+                if value: result['source_name'] = value
             elif name in ('title', 'description', 'summary', 'published', 'updated', 'pubDate', 'date', 'encoded'):
                 raw = ''.join(child.itertext()).strip()
                 key = {'pubDate': 'published', 'description':'description', 'date':'published', 'encoded':'description'}.get(name, name)
@@ -356,20 +402,57 @@ def build_data(demo=False):
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':articles,
                 'issue_candidates':discover_issues(articles, demo_features, now),
                 'insights':[], 'deep_reports':[], 'deep_status':'시연 데이터: 실제 AI 분석은 포함하지 않음', 'data_reports':[], 'data_ai_status':'시연 데이터: AI 생성 없음', 'features':demo_features, 'analysis_status':'과거 수치 사례 · 오늘의 실시간 수치 아님',
-                'sources_ok':0,'sources_total':len(SOURCES),'errors':[], 'demo':True, 'policy_sources':[]}
+                'sources_ok':0,'sources_total':len(SOURCES),'errors':[], 'demo':True, 'policy_sources':[],
+                'research_coverage':{'discovery_citations':0,'focused_citations':0,
+                'unique_citations':0,'discovery_status':'시연','focused_status':'시연'}}
 
     statuses=[]
     items=[]
-    with ThreadPoolExecutor(max_workers=7) as pool:
+    with ThreadPoolExecutor(max_workers=10) as pool:
         futures = [pool.submit(fetch_source, source) for source in SOURCES]
         for future in as_completed(futures):
             label,kind,entries,error = future.result()
             statuses.append((label,error))
+            accepted = 0
             for entry in entries:
                 item = feed_item(entry,label,kind,now)
-                if item: items.append(item)
+                if item:
+                    items.append(item)
+                    accepted += 1
+            print(f"[RSS] {label}: raw={len(entries)}, accepted={accepted}" if not error else f"[RSS] {label}: {error}", flush=True)
     candidates=deduplicate(items)
-    selected=choose(candidates)
+    # Collect FRED independently: when RSS is empty, an official-data report
+    # should still publish. Web research also runs on an RSS outage.
+    series, series_errors = fetch_metrics(now)
+    features = make_features(series, candidates, now)
+    web_discovery, discovery_status = research_public_sources(candidates, features, now)
+    first_pass=deduplicate(candidates+web_discovery)
+    provisional_issues=discover_issues(first_pass, features, now)
+    rounds = 1 if __import__('os').getenv('MARKET_RESEARCH_ROUNDS','2')=='1' else 2
+    web_focus, focused_status = (research_public_sources(first_pass, features, now, provisional_issues or [
+        {'theme': a['category'], 'article_ids': [a['id']]} for a in choose(first_pass, 5)
+    ]) if rounds==2 else ([], '집중 조사: 환경 설정으로 생략'))
+    joint=deduplicate(first_pass+web_focus)
+    selected=choose(joint)
+    # Preserve a separate quota for URL-cited research paragraphs; category
+    # round-robin can otherwise exclude them behind many high-scoring RSS rows.
+    seen={a['id'] for a in selected}
+    for cited in web_discovery+web_focus:
+        if cited['id'] not in seen:
+            selected.append(cited)
+            seen.add(cited['id'])
+        if len(selected)>=64:
+            break
+    research_coverage={
+        'discovery_citations':len(web_discovery),
+        'focused_citations':len(web_focus),
+        'unique_citations':len({a['id'] for a in web_discovery+web_focus}),
+        'discovery_status':discovery_status,
+        'focused_status':focused_status,
+        'rss_raw_candidates':len(items),
+        'rss_unique_candidates':len(candidates),
+    }
+    print('[RESEARCH]',discovery_status, '|',focused_status,flush=True)
     # Fetch a modest number of public article pages; never make up a summary.
     with ThreadPoolExecutor(max_workers=5) as pool:
         futures={pool.submit(extract_body, item['url']): item for item in selected[:30]
@@ -382,34 +465,45 @@ def build_data(demo=False):
                 item['summary']=snippet
                 item['summary_type']='공개 본문 발췌'
     errors=[f'{label}: {error}' for label,error in statuses if error]
-    if not selected:  # FRED analysis is independent of RSS news availability.
-        series, series_errors = fetch_metrics(now)
-        features = make_features(series, [], now)
+    if not selected:
         data_reports, data_ai_status = analyze_data(features, [], [], now)
         return {'generated_at':now.isoformat(timespec='minutes'),'articles':[],
                 'insights':[], 'issue_candidates':[], 'deep_reports':[],
-                'deep_status':'공개 기사 수집 부족으로 뉴스 교차분석 미실행',
+                'deep_status':'RSS와 추가 검색에서 분석할 기사 근거 미확보',
                 'data_reports':data_reports, 'data_ai_status':data_ai_status,
                 'features':features,
-                'analysis_status':f'FRED {len(series)}/6개 시계열 · 수치 기반 {len(features)}건',
+                'analysis_status':f'FRED {len(series)}/6개 시계열 · 데이터 연구 {len(features)}건',
                 'metric_errors':series_errors,
                 'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),
-                'errors':errors,'demo':False,'policy_sources':PRIMARY_SOURCES}
-    # Evidence first: never headline a pre-written textbook explanation.
-    series, series_errors = fetch_metrics(now)
-    features = make_features(series, selected, now)
-    issue_candidates=discover_issues(selected, features, now)
-    deep_reports, deep_status = analyze(selected, features, now, issue_candidates)
-    data_reports, data_ai_status = analyze_data(features, selected, deep_reports, now)
-    analysis_status = (f'실제 수치 기반 {len(features)}건 · FRED {len(series)}/6개 시계열 · ' +
-                       ('지표 일부 미확보' if series_errors else '지표 수집 완료'))
+                'errors':errors,'demo':False,'policy_sources':PRIMARY_SOURCES,
+                'research_coverage':research_coverage}
+    # Recompute paired features with full evidence candidate set.
+    features=make_features(series,selected,now)
+    issue_candidates=discover_issues(selected,features,now)
+    deep_reports,deep_status=analyze(selected,features,now,issue_candidates)
+    data_reports,data_ai_status=analyze_data(features,selected,deep_reports,now)
+    analysis_status=(f'실제 수치 기반 {len(features)}건 · FRED {len(series)}/6개 시계열 · '+
+                     ('지표 일부 미확보' if series_errors else '지표 수집 완료'))
+    print('[REPORTS] new deep=',len(deep_reports),'data=',len(data_reports),
+          'AI data=',sum(not r.get('fallback') for r in data_reports),flush=True)
     return {'generated_at':now.isoformat(timespec='minutes'),'articles':selected,
-            'insights':[], 'issue_candidates':issue_candidates, 'deep_reports':deep_reports, 'deep_status':deep_status, 'data_reports':data_reports, 'data_ai_status':data_ai_status, 'features':features, 'analysis_status':analysis_status,
+            'insights':[], 'issue_candidates':issue_candidates,
+            'deep_reports':deep_reports, 'deep_status':deep_status,
+            'data_reports':data_reports,'data_ai_status':data_ai_status,
+            'features':features,'analysis_status':analysis_status,
             'metric_errors':series_errors,
-            'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),'errors':errors,'demo':False, 'policy_sources':PRIMARY_SOURCES}
+            'sources_ok':len(SOURCES)-len(errors),'sources_total':len(SOURCES),
+            'errors':errors,'demo':False,'policy_sources':PRIMARY_SOURCES,
+            'research_coverage':research_coverage}
 
 
 def publish(data):
+    if not data.get('demo'):
+        archive=merge_archive(data, ROOT/'site')
+        data['archive_reports']=archive[:90]
+        write_archive(archive, ROOT/'site')
+    else:
+        data['archive_reports']=[]
     template=TEMPLATE.read_text(encoding='utf-8')
     serialized=json.dumps(data, ensure_ascii=False, separators=(',',':')).replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026')
     assert '/*__INITIAL_DATA__*/' in template
