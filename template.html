@@ -12,13 +12,133 @@
 @media(max-width:950px){.layout{grid-template-columns:1fr;gap:14px;padding-top:18px}.aside{position:static;display:grid;grid-template-columns:1fr 1fr;gap:10px}.aside-block{margin:0}.wrap{padding:0 21px}}
 @media(max-width:630px){body{font-size:14px}.wrap{padding:0 14px}.topbar .wrap{min-height:57px}.logo{font-size:14px}.monogram{width:29px;height:29px}.header-nav a{display:none}.intro{padding:20px 0 15px}.intro h1{font-size:27px}.aside{display:block}.aside-block{padding:12px;margin-bottom:9px}.toc-items{display:flex;overflow-x:auto;gap:13px}.toc-item{min-width:145px;border-bottom:0;border-right:1px solid #edf0f2;padding:7px 6px}.toc-item span:last-child{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}.lens-buttons{grid-template-columns:repeat(3,minmax(0,1fr))}.story-cover{padding:19px 17px}.story h3{font-size:22px}.lead{font-size:14px}.article-body{padding:19px 17px 23px;font-size:13.5px}.section-header h2{font-size:20px}.data-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{padding:11px}.stat strong{font-size:18px}.news-tools input{min-width:0}.section-caption{margin-bottom:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* v6.9 - typography and reading hierarchy only. Original content and functionality remain. */
+.lens-panel>summary{list-style:none;cursor:pointer;position:relative;padding-right:20px}
+.lens-panel>summary::-webkit-details-marker{display:none}
+.lens-panel>summary::after{content:'▾';position:absolute;right:0;top:0;color:var(--soft);font-size:13px}
+.lens-panel:not([open])>summary{margin-bottom:0}
+.lens-panel[open]>summary::after{content:'▴'}
+.lens-panel>summary:focus-visible{outline:3px solid #80b0e4;outline-offset:3px}
+
+:root{--ink:#172334;--soft:#43556b;--muted:#67758a;--line:#dce3ea}
+body{font-size:16px;line-height:1.76;letter-spacing:-.013em}
+.layout{grid-template-columns:236px minmax(0,1fr);gap:30px;padding-top:28px}
+.intro h1{letter-spacing:-.045em;line-height:1.28}
+.intro p{font-size:14px;line-height:1.72}
+.intro-bottom,.notice{font-size:13px}
+.section-header{margin-bottom:13px}
+.section-header h2{font-size:24px;line-height:1.35}
+.section-caption{font-size:13px;line-height:1.65;margin-bottom:17px}
+.section-content{gap:23px;margin-bottom:51px}
+.aside-label{font-size:13px}
+.toc-item{font-size:13px;line-height:1.6;padding:12px 0}
+.toc-index{font-size:12px}
+.lens{font-size:12px;line-height:1.35;min-height:39px}
+.aside-hint{font-size:12px;line-height:1.65}
+.story-cover{padding:29px 32px 25px}
+.story-cover>* ,.article-body>*{max-width:770px;margin-left:auto;margin-right:auto}
+.story-meta{font-size:12px;line-height:1.65;margin-bottom:13px;color:var(--soft)}
+.story h3{font-size:clamp(23px,2.35vw,29px);line-height:1.4;letter-spacing:-.04em;margin-bottom:17px}
+.lead{font-size:16.5px;line-height:1.78;letter-spacing:-.018em}
+.lead strong{font-weight:700}
+.second-lead{font-size:15px;line-height:1.75;margin-top:12px}
+.story-cover .period{font-size:12px;line-height:1.55;margin-top:17px}
+.article-body{padding:28px 32px 34px;font-size:16px;line-height:1.82;letter-spacing:-.017em}
+.article-body p{margin-bottom:17px}
+.article-body>h4{font-size:18px;line-height:1.5;letter-spacing:-.035em;margin-top:29px;margin-bottom:13px}
+.article-body>h4:not(:first-child){border-top:1px solid #e9edf2;padding-top:21px}
+.article-body>h4:first-child{margin-top:0}
+.facts{gap:8px;margin-top:13px;margin-bottom:21px}
+.fact{font-size:14.5px;line-height:1.75;padding:13px 15px;background:#fcfdfe}
+.fact p{margin-bottom:5px}
+.ref-line{gap:8px;margin-top:8px}
+.ref-line a,.ref-line span{font-size:12px;line-height:1.45;padding:4px 8px}
+.outlook{margin-top:29px;padding-top:22px}
+.outlook h4{font-size:18px;margin-bottom:12px}
+.outlook .base{font-size:16px;line-height:1.82;font-weight:650}
+.outlook .revision{font-size:15px;line-height:1.78;margin-top:12px}
+.source-detail{margin-top:25px;padding-top:16px}
+.source-detail summary{font-size:14px;line-height:1.55}
+.source-detail ul{font-size:13px;line-height:1.7}
+.source-detail .limit{font-size:13px;line-height:1.68}
+.lens-note{font-size:14px;line-height:1.7;padding:13px 15px}
+.data-stat-grid{gap:10px;margin-top:22px;margin-bottom:5px}
+.stat{padding:16px 15px}
+.stat small{font-size:12px;color:var(--soft)}
+.stat strong{font-size:24px;line-height:1.45}
+.stat em{font-size:12px;line-height:1.55}
+.data-source{font-size:13px;line-height:1.7}
+.archive-record{margin-bottom:10px}
+.archive-record summary{font-size:14px;line-height:1.6;padding:14px 4px}
+.archive-date{font-size:12px}
+.archive-text{font-size:15px;line-height:1.8;padding-top:9px}
+.archive-text p{margin-bottom:15px}
+.news-tools select,.news-tools input{font-size:14px;min-height:42px}
+.news-item{padding:18px 20px}
+.news-meta{font-size:12px;line-height:1.55}
+.news-item h3{font-size:16px;line-height:1.53;margin:8px 0}
+.news-item p{font-size:14px;line-height:1.7;margin:5px 0 10px}
+.news-controls{gap:9px;flex-wrap:wrap}
+.news-controls button{font-size:12px;min-height:35px;padding:6px 10px}
+.news-controls a{font-size:13px}
+.issues summary{font-size:13px}
+.issues article h3{font-size:15px}
+.issues article p{font-size:14px;line-height:1.65}
+.no-result{font-size:14px;line-height:1.72}
+@media(max-width:950px){
+ .layout{grid-template-columns:1fr;gap:17px;padding-top:20px}
+ .aside{grid-template-columns:1fr 1fr}
+}
+@media(max-width:630px){
+ body{font-size:15.5px;line-height:1.73}
+ .wrap{padding-left:15px;padding-right:15px}
+ .intro{padding-top:21px;padding-bottom:17px}
+ .intro h1{font-size:28px}
+ .intro p{font-size:13.5px}
+ .intro-bottom,.notice{font-size:12px;line-height:1.6}
+ .aside-block{padding:12px 13px}
+ .lens-panel:not([open]){padding-top:12px;padding-bottom:12px}
+ .intro-bottom{gap:5px 12px;margin-top:10px}
+ .intro{padding-top:16px;padding-bottom:13px}
+ .intro h1{margin:5px 0 6px}
+ .notice{margin-top:10px;padding:9px 11px}
+ .aside{margin-bottom:-3px}
+ .toc-item{font-size:12.5px;min-width:160px;line-height:1.45;padding:8px 7px}
+ .lens{font-size:12px;min-height:40px}
+ .section-header h2{font-size:21px}
+ .section-caption{font-size:12.5px;line-height:1.6}
+ .section-content{gap:19px;margin-bottom:43px}
+ .story-cover{padding:21px 19px 23px}
+ .story h3{font-size:23px;line-height:1.43;margin-bottom:14px}
+ .story-meta{font-size:11.5px}
+ .lead{font-size:16px;line-height:1.76}
+ .second-lead{font-size:14.5px}
+ .story-cover .period{font-size:11.5px;margin-top:14px}
+ .article-body{padding:23px 19px 27px;font-size:15.5px;line-height:1.8}
+ .article-body p{margin-bottom:16px}
+ .article-body>h4{font-size:17px;margin-top:25px;margin-bottom:12px}
+ .article-body>h4:not(:first-child){padding-top:18px}
+ .fact{font-size:14px;line-height:1.7;padding:12px 13px}
+ .outlook .base{font-size:15.5px}
+ .outlook .revision{font-size:14px}
+ .data-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .stat{padding:13px 11px}
+ .stat strong{font-size:21px}
+ .news-item{padding:17px 15px}
+ .news-item h3{font-size:15px}
+ .news-item p{font-size:13.5px}
+ .archive-record summary{font-size:13px;flex-wrap:wrap;gap:4px 12px}
+ .archive-text{font-size:14px}
+ .news-tools select,.news-tools input{font-size:13px}
+}
 </style>
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="logo" href="#top"><span class="monogram">M</span><span>MARKET INSIGHT LAB</span></a><nav class="header-nav" aria-label="주요 메뉴"><a href="#reports">시장 분석</a><a href="#data-research">데이터 리서치</a><a href="#news">참고 기사</a><a href="#archive">지난 분석</a><span class="date" id="header-date">갱신 정보</span></nav></div></header>
 <main class="wrap" id="top">
 <section class="intro"><div class="eyebrow">FINANCIAL MARKET RESEARCH</div><h1>주요 시장 이슈와 전망</h1><p>최근 시장에서 중요한 사건을 골라 실제 수치와 배경, 시장에 미치는 영향을 설명합니다.</p><div class="intro-bottom"><span id="updated">마지막 생성 정보 확인 중</span><span id="quick-count"></span></div><div id="notice-area" aria-live="polite"></div></section>
-<div class="layout"><aside class="aside" aria-label="분석 목차와 추가 관점"><section class="aside-block"><div class="aside-label">분석 목차</div><nav class="toc-items" id="toc" aria-label="심층 리서치 목차"></nav></section><section class="aside-block"><div class="aside-label">관심 분야별 추가 관점</div><div class="lens-buttons" id="lenses" role="group" aria-label="추가로 살펴볼 분야"></div><p class="aside-hint">분석 주제와 순위는 바뀌지 않습니다. 선택한 분야에서 더 볼 지점만 표시됩니다.</p></section></aside>
+<div class="layout"><aside class="aside" aria-label="분석 목차와 추가 관점"><section class="aside-block"><div class="aside-label">분석 목차</div><nav class="toc-items" id="toc" aria-label="심층 리서치 목차"></nav></section><details class="aside-block lens-panel" id="lens-panel" open><summary class="aside-label">관심 분야별 추가 관점</summary><div class="lens-buttons" id="lenses" role="group" aria-label="추가로 살펴볼 분야"></div><p class="aside-hint">분석 주제와 순위는 바뀌지 않습니다. 선택한 분야에서 더 볼 지점만 표시됩니다.</p></details></aside>
 <div class="main">
 <section id="reports" aria-labelledby="reports-title"><div class="section-header"><h2 id="reports-title">01 · 주요 시장 심층 분석</h2><span class="section-count" id="report-count"></span></div><p class="section-caption">중요한 이슈를 선정해 각각 독립적인 기사로 작성합니다. 분석이 부족한 날에는 편수를 채우지 않습니다.</p><div class="section-content" id="report-list" aria-live="polite"></div></section>
 <section id="data-research" aria-labelledby="data-title"><div class="section-header"><h2 id="data-title">02 · 공식 데이터 리서치</h2><span class="section-count" id="data-count"></span></div><p class="section-caption">FRED에서 같은 관측일을 맞춰 비교한 수치입니다. AI 분석과 자동 해설은 구분합니다.</p><div class="section-content" id="data-list" aria-live="polite"></div></section>
@@ -49,10 +169,12 @@ const lensMessages={
 const lensKeys=['전체',...Object.keys(lensMessages)];let lens='전체';
 function lensNote(kind,index){if(lens==='전체')return '';const messages=lensMessages[lens]||[];const text=messages[index%messages.length];return `<div class="lens-note show"><b>${esc(lens)}에서 더 볼 지점</b> · ${esc(text)}</div>`}
 function deepCard(r,i){
- const facts=(r.facts||[]).map(f=>`<div class="fact"><p>${esc(f.text)}</p><div class="ref-line">${(f.refs||[]).map(refHtml).join('')}</div></div>`).join('');
+ const distinctFacts=[];
+ for(const f of r.facts||[]){const prev=distinctFacts.find(x=>repetitive(x.text,f.text));if(prev){prev.refs=[...new Set([...(prev.refs||[]),...(f.refs||[])])]}else distinctFacts.push({...f,refs:[...(f.refs||[])]})}
+ const facts=distinctFacts.map(f=>`<div class="fact"><p>${esc(f.text)}</p><div class="ref-line">${(f.refs||[]).map(refHtml).join('')}</div></div>`).join('');
  const refs=[...(r.article_ids||[]).map(x=>arMap.get(x)).filter(Boolean),...(r.policy_ids||[]).map(x=>polMap.get(x)).filter(Boolean),...(r.feature_ids||[]).flatMap(id=>featMap.get(id)?.data_links||[])];
  return `<article class="story" id="report-${i+1}"><div class="story-cover"><div class="story-meta"><span class="kind">심층 분석 ${String(i+1).padStart(2,'0')}</span><span>· ${esc(r.kind||'금융시장')}</span><span>· ${esc(r.confidence||'낮음')} 확신</span></div><h3>${esc(r.headline)}</h3><p class="lead"><strong>${esc(r.thesis||r.lead||'')}</strong></p>${r.lead&&!repetitive(r.thesis,r.lead)?`<p class="lead second-lead">${esc(r.lead)}</p>`:''}<p class="period">${esc(r.time_frame||'')} · ${esc(r.status||'AI 분석 · 출처 확인 권장')}</p></div><div class="article-body">
- <h4>확인된 시장 변화</h4>${facts?`<div class="facts">${facts}</div>`:''}<p>${esc(r.market_change)}</p>
+ <h4>확인된 시장 변화</h4>${facts?`<div class="facts">${facts}</div>`:''}${[r.thesis,r.lead,...distinctFacts.map(x=>x.text)].some(t=>repetitive(t,r.market_change))?'':`<p>${esc(r.market_change)}</p>`}
  <h4>왜 이런 움직임이 나타났나</h4>${(r.mechanism||[]).map(t=>`<p>${esc(t)}</p>`).join('')}
  <h4>다른 지표와 연결해서 보면</h4><p>${esc(r.structural_insight)}</p>${r.what_changes?`<p>${esc(r.what_changes)}</p>`:''}
  <div class="outlook"><h4>앞으로의 전망</h4><p class="base">${esc(r.scenario_up?.interpretation||'')}</p><p>${esc(r.scenario_up?.condition||'')}</p><p class="revision"><b>전망이 달라질 조건</b> · ${esc((r.scenario_down?.condition||'')+' '+(r.scenario_down?.interpretation||''))}</p></div>
@@ -99,6 +221,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  if(b.dataset.lens){lens=b.dataset.lens;$('#lenses').querySelectorAll('button').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.lens===lens)));$('#report-list').innerHTML=reports.map(deepCard).join('');$('#data-list').innerHTML=features.map(dataCard).join('');return}
  if(b.dataset.action&&b.dataset.id){const set=b.dataset.action==='save'?saved:read;set.has(b.dataset.id)?set.delete(b.dataset.id):set.add(b.dataset.id);saveSet(b.dataset.action==='save'?'mil_saved_v68':'mil_read_v68',set);renderNews()}});
 $('#category').addEventListener('change',renderNews);$('#search').addEventListener('input',renderNews);
+if(window.matchMedia&&window.matchMedia('(max-width:630px)').matches)$('#lens-panel').open=false;
 render();
 })();
 </script>
