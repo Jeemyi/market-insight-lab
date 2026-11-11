@@ -1,12 +1,10 @@
 name: Daily MARKET INSIGHT LAB
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
   schedule:
-    - cron: "17 22,3,9 * * *"
+    # 07:17 Asia/Seoul (UTC+9), once each day.
+    - cron: '17 22 * * *'
 
 permissions:
   contents: read
@@ -21,28 +19,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
+          python-version: '3.12'
+      - name: Restore prior published research archive
+        uses: actions/cache/restore@v4
+        with:
+          path: site/history.json
+          key: market-history-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            market-history-
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
-
+        run: pip install -r requirements.txt
       - name: Collect RSS and build connected market insights
         env:
-          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          OPENAI_MODEL: gpt-6.1-sol
+          MARKET_WEB_RESEARCH: '1'
+          MARKET_RESEARCH_ROUNDS: '2'
         run: python build.py
-
+      - name: Save research archive for the next run
+        uses: actions/cache/save@v4
+        with:
+          path: site/history.json
+          key: market-history-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:
           path: ./site
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
